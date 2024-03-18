@@ -1,10 +1,6 @@
 <mxfile host="65bd71144e">
     <diagram name="Page-1" id="U29332rxSKfejZdtEMYF">
-<<<<<<< HEAD:planeamento/diagrama_projeto.drawio
-        <mxGraphModel dx="1610" dy="1179" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="0" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
-=======
         <mxGraphModel dx="1610" dy="974" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="0" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
->>>>>>> 6d1a2d81e42f00512c966e8cebb656eff81a97a2:planeamento/Untitled Diagram.drawio
             <root>
                 <mxCell id="0"/>
                 <mxCell id="1" parent="0"/>
@@ -32,12 +28,9 @@
                 <mxCell id="J58E7H1g6Y6a5eLEYD46-9" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;fontSize=12;startSize=8;endSize=8;" parent="1" source="J58E7H1g6Y6a5eLEYD46-6" target="J58E7H1g6Y6a5eLEYD46-8" edge="1">
                     <mxGeometry relative="1" as="geometry"/>
                 </mxCell>
-<<<<<<< HEAD:planeamento/diagrama_projeto.drawio
-=======
                 <mxCell id="15" style="edgeStyle=none;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="J58E7H1g6Y6a5eLEYD46-6" target="14" edge="1">
                     <mxGeometry relative="1" as="geometry"/>
                 </mxCell>
->>>>>>> 6d1a2d81e42f00512c966e8cebb656eff81a97a2:planeamento/Untitled Diagram.drawio
                 <mxCell id="J58E7H1g6Y6a5eLEYD46-6" value="&lt;div&gt;Hash Changed&amp;nbsp;&lt;/div&gt;&lt;div&gt;or New hash&lt;/div&gt;" style="rhombus;whiteSpace=wrap;html=1;fillColor=#6a00ff;fontColor=#ffffff;strokeColor=#3700CC;" parent="1" vertex="1">
                     <mxGeometry x="201.5" y="-52" width="133" height="80" as="geometry"/>
                 </mxCell>
@@ -81,7 +74,7 @@
                 <mxCell id="J58E7H1g6Y6a5eLEYD46-22" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;fontSize=12;startSize=8;endSize=8;" parent="1" source="J58E7H1g6Y6a5eLEYD46-16" target="J58E7H1g6Y6a5eLEYD46-21" edge="1">
                     <mxGeometry relative="1" as="geometry"/>
                 </mxCell>
-                <mxCell id="J58E7H1g6Y6a5eLEYD46-16" value="Keep in quarantine / Delete" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#1ba1e2;fontColor=#ffffff;strokeColor=#006EAF;" parent="1" vertex="1">
+                <mxCell id="J58E7H1g6Y6a5eLEYD46-16" value="Keep in quarantine / Delete, keep a copy" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#1ba1e2;fontColor=#ffffff;strokeColor=#006EAF;" parent="1" vertex="1">
                     <mxGeometry x="49" y="176" width="120" height="60" as="geometry"/>
                 </mxCell>
                 <mxCell id="J58E7H1g6Y6a5eLEYD46-23" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;fontSize=12;startSize=8;endSize=8;" parent="1" source="J58E7H1g6Y6a5eLEYD46-18" target="J58E7H1g6Y6a5eLEYD46-21" edge="1">
@@ -118,14 +111,10 @@
                         </Array>
                     </mxGeometry>
                 </mxCell>
-<<<<<<< HEAD:planeamento/diagrama_projeto.drawio
-                <mxCell id="2" value="Hashes stored in DB" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#a20025;fontColor=#ffffff;strokeColor=#6F0000;" vertex="1" parent="1">
-=======
                 <mxCell id="17" style="edgeStyle=none;html=1;exitX=1;exitY=0.75;exitDx=0;exitDy=0;entryX=0;entryY=0.75;entryDx=0;entryDy=0;" parent="1" source="2" target="7" edge="1">
                     <mxGeometry relative="1" as="geometry"/>
                 </mxCell>
                 <mxCell id="2" value="Hashes stored" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#a20025;fontColor=#ffffff;strokeColor=#6F0000;" parent="1" vertex="1">
->>>>>>> 6d1a2d81e42f00512c966e8cebb656eff81a97a2:planeamento/Untitled Diagram.drawio
                     <mxGeometry x="380" y="-147" width="120" height="60" as="geometry"/>
                 </mxCell>
                 <mxCell id="8" style="edgeStyle=none;html=1;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="7" target="2" edge="1">
@@ -140,13 +129,8 @@
                         <mxPoint x="537" y="-184" as="targetPoint"/>
                     </mxGeometry>
                 </mxCell>
-<<<<<<< HEAD:planeamento/diagrama_projeto.drawio
-                <mxCell id="10" value="Exterior Socket&lt;br&gt;Communicates with DB&lt;br&gt;Gets alerts on new hashes&lt;br&gt;Configurations on whitelists&lt;br&gt;Pings RUST Services&lt;br&gt;Pings Hosts&lt;br&gt;Allows for file validation" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
-                    <mxGeometry x="547" y="-78" width="164" height="113" as="geometry"/>
-=======
                 <mxCell id="10" value="Exterior Socket&lt;br&gt;Collects hashes and stores them by system for monitoring&lt;br&gt;Gets alerts on new hashes&lt;br&gt;Configurations on whitelists&lt;br&gt;Pings RUST Services&lt;br&gt;Pings Hosts&lt;br&gt;Allows for file validation" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" parent="1" vertex="1">
                     <mxGeometry x="547" y="-78" width="326" height="113" as="geometry"/>
->>>>>>> 6d1a2d81e42f00512c966e8cebb656eff81a97a2:planeamento/Untitled Diagram.drawio
                 </mxCell>
                 <mxCell id="13" style="edgeStyle=none;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="11" target="J58E7H1g6Y6a5eLEYD46-2" edge="1">
                     <mxGeometry relative="1" as="geometry"/>
@@ -154,8 +138,6 @@
                 <mxCell id="11" value="Service Creation on OS" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#1ba1e2;fontColor=#ffffff;strokeColor=#006EAF;" parent="1" vertex="1">
                     <mxGeometry x="-124.5" y="-147" width="120" height="60" as="geometry"/>
                 </mxCell>
-<<<<<<< HEAD:planeamento/diagrama_projeto.drawio
-=======
                 <mxCell id="14" value="Generate Alert" style="shape=document;whiteSpace=wrap;html=1;boundedLbl=1;fillColor=#d80073;fontColor=#ffffff;strokeColor=#A50040;" parent="1" vertex="1">
                     <mxGeometry x="358" y="-1" width="86" height="58" as="geometry"/>
                 </mxCell>
@@ -165,7 +147,6 @@
                 <mxCell id="20" value="&lt;div style=&quot;&quot;&gt;&lt;b style=&quot;background-color: initial;&quot;&gt;DevOps&lt;/b&gt;&lt;span style=&quot;background-color: initial;&quot;&gt;:&lt;/span&gt;&lt;/div&gt;&lt;div style=&quot;&quot;&gt;1. Gather Requirements&lt;/div&gt;&lt;div style=&quot;&quot;&gt;2. Design Achitechture&lt;/div&gt;&lt;div style=&quot;&quot;&gt;3. Setup Rust Env&lt;/div&gt;&lt;div style=&quot;&quot;&gt;4. Implement Hashing&lt;/div&gt;&lt;div style=&quot;&quot;&gt;5. Develop Storage Mechanism&lt;/div&gt;&lt;div style=&quot;&quot;&gt;6. Validation Logic&lt;/div&gt;&lt;div style=&quot;&quot;&gt;7. Implement Quarantine System&lt;/div&gt;&lt;div style=&quot;&quot;&gt;8. Create Alert System&lt;/div&gt;&lt;div style=&quot;&quot;&gt;9. Socket&lt;/div&gt;&lt;div style=&quot;&quot;&gt;10. Testing&lt;/div&gt;&lt;div style=&quot;&quot;&gt;11. Deploy&lt;/div&gt;&lt;div style=&quot;&quot;&gt;&lt;br&gt;&lt;/div&gt;" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=default;fillColor=none;fontSize=16;" vertex="1" parent="1">
                     <mxGeometry x="645" y="78" width="252" height="261" as="geometry"/>
                 </mxCell>
->>>>>>> 6d1a2d81e42f00512c966e8cebb656eff81a97a2:planeamento/Untitled Diagram.drawio
             </root>
         </mxGraphModel>
     </diagram>
