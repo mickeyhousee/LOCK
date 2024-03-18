@@ -1,6 +1,9 @@
 <mxfile host="65bd71144e">
     <diagram name="Page-1" id="U29332rxSKfejZdtEMYF">
         <mxGraphModel dx="1610" dy="974" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="0" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+        <mxGraphModel dx="1616" dy="974" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="0" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+        <mxGraphModel dx="1610" dy="1179" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="0" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+        <mxGraphModel dx="1610" dy="974" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="0" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
             <root>
                 <mxCell id="0"/>
                 <mxCell id="1" parent="0"/>
@@ -120,13 +123,16 @@
                 <mxCell id="8" style="edgeStyle=none;html=1;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="7" target="2" edge="1">
                     <mxGeometry relative="1" as="geometry"/>
                 </mxCell>
+                <mxCell id="22" style="edgeStyle=none;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;fontSize=16;" edge="1" parent="1" source="7" target="21">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
                 <mxCell id="7" value="Socket" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#e3c800;fontColor=#000000;strokeColor=#B09500;" parent="1" vertex="1">
                     <mxGeometry x="564" y="-147" width="120" height="60" as="geometry"/>
                 </mxCell>
                 <mxCell id="9" value="" style="endArrow=none;html=1;" parent="1" edge="1">
                     <mxGeometry width="50" height="50" relative="1" as="geometry">
-                        <mxPoint x="537" y="50" as="sourcePoint"/>
-                        <mxPoint x="537" y="-184" as="targetPoint"/>
+                        <mxPoint x="534.5" y="117" as="sourcePoint"/>
+                        <mxPoint x="534.5" y="-117" as="targetPoint"/>
                     </mxGeometry>
                 </mxCell>
                 <mxCell id="10" value="Exterior Socket&lt;br&gt;Collects hashes and stores them by system for monitoring&lt;br&gt;Gets alerts on new hashes&lt;br&gt;Configurations on whitelists&lt;br&gt;Pings RUST Services&lt;br&gt;Pings Hosts&lt;br&gt;Allows for file validation" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" parent="1" vertex="1">
@@ -145,7 +151,13 @@
                     <mxGeometry x="77" y="-259" width="617" height="31" as="geometry"/>
                 </mxCell>
                 <mxCell id="20" value="&lt;div style=&quot;&quot;&gt;&lt;b style=&quot;background-color: initial;&quot;&gt;DevOps&lt;/b&gt;&lt;span style=&quot;background-color: initial;&quot;&gt;:&lt;/span&gt;&lt;/div&gt;&lt;div style=&quot;&quot;&gt;1. Gather Requirements&lt;/div&gt;&lt;div style=&quot;&quot;&gt;2. Design Achitechture&lt;/div&gt;&lt;div style=&quot;&quot;&gt;3. Setup Rust Env&lt;/div&gt;&lt;div style=&quot;&quot;&gt;4. Implement Hashing&lt;/div&gt;&lt;div style=&quot;&quot;&gt;5. Develop Storage Mechanism&lt;/div&gt;&lt;div style=&quot;&quot;&gt;6. Validation Logic&lt;/div&gt;&lt;div style=&quot;&quot;&gt;7. Implement Quarantine System&lt;/div&gt;&lt;div style=&quot;&quot;&gt;8. Create Alert System&lt;/div&gt;&lt;div style=&quot;&quot;&gt;9. Socket&lt;/div&gt;&lt;div style=&quot;&quot;&gt;10. Testing&lt;/div&gt;&lt;div style=&quot;&quot;&gt;11. Deploy&lt;/div&gt;&lt;div style=&quot;&quot;&gt;&lt;br&gt;&lt;/div&gt;" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=default;fillColor=none;fontSize=16;" vertex="1" parent="1">
-                    <mxGeometry x="645" y="78" width="252" height="261" as="geometry"/>
+                    <mxGeometry x="647" y="275" width="252" height="261" as="geometry"/>
+                </mxCell>
+                <mxCell id="21" value="DB" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#1ba1e2;fontColor=#ffffff;strokeColor=#006EAF;" vertex="1" parent="1">
+                    <mxGeometry x="740" y="-147" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="24" value="??" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=16;" vertex="1" parent="1">
+                    <mxGeometry x="517" y="-154" width="36" height="31" as="geometry"/>
                 </mxCell>
             </root>
         </mxGraphModel>
