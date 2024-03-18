@@ -4,11 +4,11 @@ use std::thread::sleep;
 use std::time::Duration;
 
 fn main() {
-    // Define o arquivo de notas
+    // Define o caminho do ficheiro das notas
     let arquivo_notas = "/home/joaog/notas.txt";
 
     loop {
-        // Escreve "Olá" no arquivo de notas
+        // Escreve "Olá" no ficheiro de notas
         let mut arquivo = OpenOptions::new()
             .write(true)
             .append(true)
