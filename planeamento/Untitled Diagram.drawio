@@ -4,11 +4,11 @@
             <root>
                 <mxCell id="0"/>
                 <mxCell id="1" parent="0"/>
-                <mxCell id="J58E7H1g6Y6a5eLEYD46-3" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;fontSize=12;startSize=8;endSize=8;" parent="1" source="J58E7H1g6Y6a5eLEYD46-1" target="J58E7H1g6Y6a5eLEYD46-2" edge="1">
+                <mxCell id="12" style="edgeStyle=none;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="J58E7H1g6Y6a5eLEYD46-1" target="11">
                     <mxGeometry relative="1" as="geometry"/>
                 </mxCell>
                 <mxCell id="J58E7H1g6Y6a5eLEYD46-1" value="System Start-up" style="ellipse;whiteSpace=wrap;html=1;fillColor=#60a917;fontColor=#ffffff;strokeColor=#2D7600;" parent="1" vertex="1">
-                    <mxGeometry x="-122" y="-157" width="120" height="80" as="geometry"/>
+                    <mxGeometry x="-124.5" y="-261" width="120" height="80" as="geometry"/>
                 </mxCell>
                 <mxCell id="J58E7H1g6Y6a5eLEYD46-5" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;fontSize=12;startSize=8;endSize=8;" parent="1" source="J58E7H1g6Y6a5eLEYD46-2" target="J58E7H1g6Y6a5eLEYD46-4" edge="1">
                     <mxGeometry relative="1" as="geometry"/>
@@ -123,8 +123,14 @@
                         <mxPoint x="535" y="-190" as="targetPoint"/>
                     </mxGeometry>
                 </mxCell>
-                <mxCell id="10" value="Exterior Socket&lt;br&gt;Communicates with DB&lt;br&gt;Gets alerts on new hashes&lt;br&gt;Configurations on whitelists&lt;br&gt;Pings RUST Services&lt;br&gt;Pings Hosts" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
-                    <mxGeometry x="547" y="-77" width="164" height="98" as="geometry"/>
+                <mxCell id="10" value="Exterior Socket&lt;br&gt;Communicates with DB&lt;br&gt;Gets alerts on new hashes&lt;br&gt;Configurations on whitelists&lt;br&gt;Pings RUST Services&lt;br&gt;Pings Hosts&lt;br&gt;Allows for file validation" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+                    <mxGeometry x="547" y="-78" width="164" height="113" as="geometry"/>
+                </mxCell>
+                <mxCell id="13" style="edgeStyle=none;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="11" target="J58E7H1g6Y6a5eLEYD46-2">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="11" value="Service Creation on OS" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#1ba1e2;fontColor=#ffffff;strokeColor=#006EAF;" vertex="1" parent="1">
+                    <mxGeometry x="-124.5" y="-147" width="120" height="60" as="geometry"/>
                 </mxCell>
             </root>
         </mxGraphModel>
