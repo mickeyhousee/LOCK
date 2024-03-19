@@ -8,12 +8,11 @@ original_files_dir = 'original_files'
 backup_files_dir = 'backup_files'
 quarantine_dir = 'quarantine'
 
-# Create directories if they don't exist
 os.makedirs(original_files_dir, exist_ok=True)
 os.makedirs(backup_files_dir, exist_ok=True)
 os.makedirs(quarantine_dir, exist_ok=True)
 
-# This function computes the hash of a file
+# hashing of a file
 def hash_file(file_path):
     hasher = hashlib.sha256()
     with open(file_path, 'rb') as file:
@@ -21,7 +20,7 @@ def hash_file(file_path):
         hasher.update(buffer)
     return hasher.hexdigest()
 
-# Initial setup: Hashing the files and storing the hashes
+# Hashing the files and storing the hashes
 def initial_setup(file_paths):
     hashes = {}
     for file_path in file_paths:
@@ -58,7 +57,7 @@ def check_for_changes(file_paths, stored_hashes):
 
 def continuous_monitoring(file_paths, stored_hashes):
     print("Starting continuous monitoring for approximately 1 minute...")
-    end_time = time.time() + 60  # Set up the end time for 60 seconds from now
+    end_time = time.time() + 60 
     try:
         while time.time() < end_time:  # Run until the current time is less than the end time
             print("Checking for changes...")
@@ -85,11 +84,7 @@ stored_hashes
 # Simulate the continuous monitoring
 continuous_monitoring(sample_files, stored_hashes)
 
-# Since this is a simulation, we will not actually modify the script live, but let's assume we made a change
-# For demonstration, let's modify one of the sample files to simulate a change
 with open(sample_files[0], 'a') as f:
     f.write("\nModification to the file to simulate a change.")
 
-# Now we simulate running the modified continuous monitoring again
-# This would simulate the behavior after the script is modified
 continuous_monitoring(sample_files, stored_hashes)
