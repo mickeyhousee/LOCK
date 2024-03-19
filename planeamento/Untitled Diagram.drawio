@@ -68,8 +68,8 @@
                 <mxCell id="J58E7H1g6Y6a5eLEYD46-22" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;fontSize=12;startSize=8;endSize=8;" parent="1" source="J58E7H1g6Y6a5eLEYD46-16" target="J58E7H1g6Y6a5eLEYD46-21" edge="1">
                     <mxGeometry relative="1" as="geometry"/>
                 </mxCell>
-                <mxCell id="J58E7H1g6Y6a5eLEYD46-16" value="Stay on quarantine section / Delete or subsitute by orginial previous file saved" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#1ba1e2;fontColor=#ffffff;strokeColor=#006EAF;" parent="1" vertex="1">
-                    <mxGeometry x="49" y="176" width="120" height="60" as="geometry"/>
+                <mxCell id="J58E7H1g6Y6a5eLEYD46-16" value="Stay on quarantine section / Delete or subsitute by orginial previous file saved on back-up" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#1ba1e2;fontColor=#ffffff;strokeColor=#006EAF;" parent="1" vertex="1">
+                    <mxGeometry x="46" y="168.5" width="123" height="75" as="geometry"/>
                 </mxCell>
                 <mxCell id="J58E7H1g6Y6a5eLEYD46-23" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;fontSize=12;startSize=8;endSize=8;" parent="1" source="J58E7H1g6Y6a5eLEYD46-18" target="J58E7H1g6Y6a5eLEYD46-21" edge="1">
                     <mxGeometry relative="1" as="geometry"/>
