@@ -93,3 +93,25 @@ $ rustc src/main.rs
 $ ./main
 Hello, world!
 ```
+
+### Compile Project using **Cargo**
+
+Run the following command in your terminal:
+
+```bash
+$ cargo build
+```
+
+This command instructs Cargo to compile your Rust code and its dependencies. By default, Cargo creates an optimized build for development in the **target/debug** directory.
+
+
+
+**Build for Release:** To create a more optimized build suitable for production, use the --release flag:
+
+
+```bash
+$ cargo build --release
+```
+
+This creates the binary in the **target/release** directory.
+
