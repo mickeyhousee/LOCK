@@ -1,20 +1,19 @@
-// Import necessary libraries
-use sha1::{Sha1, Digest}; // Provide SHA-1 hashing functionality
-use std::fs::File;         // For opening files
-use std::io::{self, Read};  // For reading file contents and error handling
+use as_bytes::AsBytes;
+use sha1::{Sha1, Digest};
+use std::fs::{File, OpenOptions};
+use std::io::{self, Read, Write};
 
-// Define the main function, handling potential errors
 fn main() -> Result<(), std::io::Error> {
-    // Specify the file path to hash (replace with your actual path)
+    // Specify the file path to hash
     let path = "/home/joaog/LOCK/rust_exercicies/mini_projects/hello_world";
 
-    // Open the file, handling potential errors
+    // Open the file for reading
     let mut file = File::open(path)?;
 
-    // Create a new SHA-1 hasher to compute the hash
+    // Create a new SHA-1 hasher
     let mut hasher = Sha1::new();
 
-    // Create a buffered reader for efficient file reading
+    // Create a buffered reader for efficient reading
     let mut reader = io::BufReader::new(file);
 
     // Buffer for reading file contents in chunks
@@ -22,24 +21,32 @@ fn main() -> Result<(), std::io::Error> {
 
     // Loop for reading and hashing the file in chunks
     loop {
-        // Read a chunk of data into the buffer
         let bytes_read = reader.read(&mut buf)?;
 
-        // If no bytes were read, we've reached the end of the file
+        // Check for end of file
         if bytes_read == 0 {
             break;
         }
 
-        // Update the SHA-1 hash with the read bytes
         hasher.update(&buf[..bytes_read]);
     }
 
     // Finalize the SHA-1 hash calculation
     let hash = hasher.finalize();
 
-    // Print the calculated SHA-1 hash
-    println!("SHA-1 hash: {:x?}", hash);
+    // Create "hashs.hash" file with write permissions, creating it if needed
+    let mut hash_file = OpenOptions::new()
+        .create(true) // Create the file if it doesn't exist
+        .write(true)
+        .open("hashs.hash")?;
 
-    // Indicate successful execution
+    // Write the SHA-1 hash as bytes to the file (using unsafe block)
+    unsafe {
+        hash_file.write_all(hash.as_bytes())?;
+    }
+
+    println!("SHA-1 hash: {:x?}", hash);
+    println!("Hash saved to hashs.hash");
+
     Ok(())
 }
