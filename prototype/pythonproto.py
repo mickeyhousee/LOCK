@@ -1,90 +1,100 @@
 import hashlib
 import os
 import shutil
-import time
+import logging
+import time  # This import is necessary for time.sleep()
+from datetime import datetime
+from logging.handlers import RotatingFileHandler
 
-# Define the directory for storing original and backup files
-original_files_dir = 'original_files'
-backup_files_dir = 'backup_files'
-quarantine_dir = 'quarantine'
 
-os.makedirs(original_files_dir, exist_ok=True)
-os.makedirs(backup_files_dir, exist_ok=True)
-os.makedirs(quarantine_dir, exist_ok=True)
+# Initialize logging
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s [%(levelname)s] %(message)s",
+    handlers=[
+        RotatingFileHandler("monitoring.log", maxBytes=10485760, backupCount=10),
+        logging.StreamHandler()
+    ]
+)
 
-# hashing of a file
-def hash_file(file_path):
+# Directories and file paths (to be adjusted to your actual paths)
+MONITOR_DIR = '/home/onezero/LOCK/prototype/files'  # Directory containing files to be monitored
+BACKUP_DIR = '/home/onezero/LOCK/prototype/backup'  # Directory where backups will be stored
+QUARANTINE_DIR = '/home/onezero/LOCK/prototype/quarantine'  # Directory where suspicious files will be quarantined
+HASH_FILE = 'hashes.csv'  # File where current hashes will be stored
+BACKUP_HASH_FILE = 'backup_hashes.csv'  # File where backup hashes will be stored
+
+# Create necessary directories if they don't exist
+os.makedirs(MONITOR_DIR, exist_ok=True)
+os.makedirs(BACKUP_DIR, exist_ok=True)
+os.makedirs(QUARANTINE_DIR, exist_ok=True)
+
+def create_service():
+    """ Placeholder for the OS-specific service creation logic """
+    logging.info("Service creation logic goes here.")
+
+def hash_file(filepath):
+    """ Generate SHA-256 hash for the specified file """
     hasher = hashlib.sha256()
-    with open(file_path, 'rb') as file:
-        buffer = file.read()
-        hasher.update(buffer)
-    return hasher.hexdigest()
-
-# Hashing the files and storing the hashes
-def initial_setup(file_paths):
-    hashes = {}
-    for file_path in file_paths:
-        print(f"Hashing file {file_path}")
-        hash_of_file = hash_file(file_path)
-        hashes[file_path] = hash_of_file
-        # Create a backup of the file
-        shutil.copy(file_path, backup_files_dir)
-        print(f"Backup created for {file_path}")
-    return hashes
-
-# Function to check for changes in the files
-def check_for_changes(file_paths, stored_hashes):
-    changes_detected = False
-    for file_path in file_paths:
-        current_hash = hash_file(file_path)
-        if current_hash != stored_hashes[file_path]:
-            changes_detected = True
-            print(f"Change detected in {file_path}. Generating alert...")
-            quarantine_path = os.path.join(quarantine_dir, os.path.basename(file_path))
-            if os.path.exists(quarantine_path):
-                # Rename the existing file in quarantine with a timestamp
-                new_name = f"{os.path.splitext(quarantine_path)[0]}_{int(time.time())}{os.path.splitext(quarantine_path)[1]}"
-                os.rename(quarantine_path, new_name)
-                print(f"Existing quarantine file renamed to {new_name}.")
-            # Move the new file to quarantine
-            shutil.move(file_path, quarantine_dir)
-            print(f"File {file_path} moved to quarantine.")
-            # Restore the file from backup
-            backup_path = os.path.join(backup_files_dir, os.path.basename(file_path))
-            shutil.copy(backup_path, file_path)
-            print(f"File {file_path} restored from backup.")
-    return changes_detected
-
-def continuous_monitoring(file_paths, stored_hashes):
-    print("Starting continuous monitoring for approximately 1 minute...")
-    end_time = time.time() + 60 
     try:
-        while time.time() < end_time:  # Run until the current time is less than the end time
-            print("Checking for changes...")
-            if check_for_changes(file_paths, stored_hashes):
-                print("Changes detected. Updating hash list and continuing monitoring...")
-                for file_path in file_paths:
-                    stored_hashes[file_path] = hash_file(file_path)
-            time.sleep(10)  # Wait for 10 seconds before the next check
-    except KeyboardInterrupt:
-        print("Monitoring stopped by user.")
+        with open(filepath, 'rb') as f:
+            hasher.update(f.read())
+        return hasher.hexdigest()
+    except Exception as e:
+        logging.error(f"Failed to hash file {filepath}: {e}")
+        return None
 
-# Sample files creation for the prototype
-sample_files = [os.path.join(original_files_dir, 'sample1.txt'), os.path.join(original_files_dir, 'sample2.txt')]
-for sample_file in sample_files:
-    with open(sample_file, 'w') as f:
-        f.write(f"This is a sample file named {os.path.basename(sample_file)}.")
+def initial_hashing():
+    """ Hash all files in the monitoring directory and backup the hashes """
+    hashes = {}
+    with open(HASH_FILE, 'w') as f, open(BACKUP_HASH_FILE, 'w') as bf:
+        for filename in os.listdir(MONITOR_DIR):
+            filepath = os.path.join(MONITOR_DIR, filename)
+            file_hash = hash_file(filepath)
+            if file_hash:
+                hashes[filepath] = file_hash
+                f.write(f"{filepath},{file_hash}\n")
+                bf.write(f"{filepath},{file_hash}\n")
+                # Create a backup copy of the file
+                shutil.copy2(filepath, BACKUP_DIR)
+                logging.info(f"Hashed and backed up {filepath}")
+    # Make hash storage read-only
+    os.chmod(HASH_FILE, 0o444)
 
-# Running the initial setup
-stored_hashes = initial_setup(sample_files)
+def monitor_files():
+    """ Continuously monitor the files for changes """
+    while True:
+        with open(HASH_FILE, 'r') as f:
+            current_hashes = {line.split(',')[0]: line.split(',')[1].strip() for line in f.readlines()}
+        for filepath, saved_hash in current_hashes.items():
+            if os.path.exists(filepath):
+                current_hash = hash_file(filepath)
+                if current_hash != saved_hash:
+                    logging.warning(f"File changed or corrupted: {filepath}")
+                    quarantine_file(filepath)
+            else:
+                logging.warning(f"File deleted or moved: {filepath}")
+                quarantine_file(filepath)
+        time.sleep(5)  # Interval for checking file changes
 
-# Output the result of initial setup
-stored_hashes
+def quarantine_file(filepath):
+    """ Move the file to the quarantine directory and restore from backup if necessary """
+    # Extract the filename from the filepath
+    filename = os.path.basename(filepath)
+    # Move the file to the quarantine directory
+    shutil.move(filepath, os.path.join(QUARANTINE_DIR, filename))
+    logging.info(f"Moved {filename} to quarantine.")
+    # Restore the file from the backup
+    backup_filepath = os.path.join(BACKUP_DIR, filename)
+    if os.path.exists(backup_filepath):
+        shutil.copy2(backup_filepath, MONITOR_DIR)
+        logging.info(f"Restored {filename} from backup.")
 
-# Simulate the continuous monitoring
-continuous_monitoring(sample_files, stored_hashes)
+def system_startup():
+    """ Perform actions on system startup """
+    create_service()
+    initial_hashing()
+    monitor_files()
 
-with open(sample_files[0], 'a') as f:
-    f.write("\nModification to the file to simulate a change.")
-
-continuous_monitoring(sample_files, stored_hashes)
+if __name__ == "__main__":
+    system_startup()
