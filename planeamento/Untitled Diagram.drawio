@@ -1,6 +1,6 @@
 <mxfile host="65bd71144e">
     <diagram name="Page-1" id="U29332rxSKfejZdtEMYF">
-        <mxGraphModel dx="1616" dy="1005" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="0" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+        <mxGraphModel dx="1075" dy="1051" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="0" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
             <root>
                 <mxCell id="0"/>
                 <mxCell id="1" parent="0"/>
@@ -80,7 +80,7 @@
                         </Array>
                     </mxGeometry>
                 </mxCell>
-                <mxCell id="2" value="Create a read only file and store the hashes here" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#a20025;fontColor=#ffffff;strokeColor=#6F0000;" parent="1" vertex="1">
+                <mxCell id="2" value="Create a read only file and send this to a server via scp to store it a hash.csv file" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#a20025;fontColor=#ffffff;strokeColor=#6F0000;" parent="1" vertex="1">
                     <mxGeometry x="380" y="-147" width="120" height="60" as="geometry"/>
                 </mxCell>
                 <mxCell id="13" style="edgeStyle=none;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="11" target="J58E7H1g6Y6a5eLEYD46-2" edge="1">
