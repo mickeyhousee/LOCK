@@ -4,7 +4,7 @@ Script made for LS24
 This script is used to monitor some services based on the configuration file ".cfg".
 
 
-Author: Developer Team CCD PT
+Author: Development Team CCD PT
 """
 
 import subprocess
@@ -67,8 +67,9 @@ def monitor_services(services, log_file):
         time.sleep(5)  # Check services every 5 seconds
 
 if __name__ == "__main__":
-    config_file = "/home/joaog/LOCK/prototype/servicemonitor/services.cfg"
-    log_file = "/home/joaog/service_monitor.log"
+    dir_path = os.path.dirname(os.path.realpath(__file__))
+    config_file = f"{dir_path}/services.cfg"
+    log_file = f"{dir_path}service_monitor.log"
     services = read_services_from_config(config_file)
     monitor_services(services, log_file)
 
