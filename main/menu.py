@@ -34,14 +34,20 @@ def install_service(file_path, service_file_path, service_name):
         print(f'Ocorreu um erro ao instalar o serviço {service_name}: {e}')
     print("Serviço instalado com sucesso!")
 
+
+
 # Função para parar serviço usando systemctl
 def stop_service():
     subprocess.run(['sudo', 'systemctl', 'stop', 'ufw'], check=True)
     print("Parando serviço...")
     # Comandos para parar o serviço aqui
     print("Serviço parado com sucesso!")
-def start_service():
-    subprocess.run(['sudo', 'systemctl', 'start', 'ufw'], check=True)
+
+
+
+
+def start_service(service_name):
+    subprocess.run(['sudo', 'systemctl', 'start', service_name], check=True)
     print("Serviço Iniciado com sucesso!")
 
 
@@ -69,6 +75,10 @@ def backup_menu():
 
 # Função para exibir o menu do script "ServiceMonitor"
 def service_monitor_menu():
+    dir_path = os.path.dirname(os.path.realpath(__file__))
+    file_path = f"{dir_path}/modules/servicemonitor/servicemonitor.py"
+    service_file_path = "/modules/servicemonitor/servicemonitor.service"
+    service_name = "servicemonitor"
     while True:
         print("\nMenu do script \"ServiceMonitor\":")
         print("1. Instalar serviço (systemctl)")
@@ -79,12 +89,10 @@ def service_monitor_menu():
         option = input("Opção: ")
 
         if option == "1":
-            file_path = "/home/joaog/LOCK/prototype/servicemonitor/servicemonitor.py"
-            service_file_path = "../servicemonitor/servicemonitor.service"
-            service_name = "servicemonitor"
             install_service(file_path,service_file_path, service_name)
+
         elif option == "2":
-            start_service()
+            start_service(service_name)
         elif option == "3":
             stop_service()
         elif option == "4":
