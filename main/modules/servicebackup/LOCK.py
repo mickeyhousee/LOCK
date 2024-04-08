@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """__summary__
 Script made for LS24
+System designed in python to monitor and validate files on an operating system
 
 Author: Development Team COCIBER PT
 """
@@ -25,7 +26,6 @@ logging.basicConfig(
 # Relative Path
 dir_path = os.path.dirname(os.path.realpath(__file__))
 
-print(dir_path)
 # Directories and file paths (to be adjusted to your actual paths)
 MONITOR_DIR = f'{dir_path}/monitor'  # Directory containing files to be monitored
 BACKUP_DIR = '/home/onezero/LOCK/prototype/backup'  # Directory where backups will be stored
