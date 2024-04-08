@@ -1,18 +1,19 @@
 #!/usr/bin/env python3
-"""__summary__
-Script made for LS24
-System designed in python to monitor and validate files on an operating system
+"""
+Script for monitoring specified files, backing up, and sending via SCP.
+It monitors for any changes and restores files from backup if changes are detected.
 
 Author: Development Team COCIBER PT
 """
+
 import hashlib
 import os
 import shutil
 import logging
-import time 
-from datetime import datetime
-from logging.handlers import RotatingFileHandler
-
+import time
+import paramiko
+from scp import SCPClient
+import signal
 
 # Initialize logging
 logging.basicConfig(
@@ -23,24 +24,44 @@ logging.basicConfig(
         logging.StreamHandler()
     ]
 )
+
+# SCP server details
+SCP_SERVER = ''
+SCP_USER = ''
+SCP_PASSWORD = ''  # It's recommended to use SSH key authentication instead
+SCP_REMOTE_PATH = ''
+
 # Relative Path
 dir_path = os.path.dirname(os.path.realpath(__file__))
 
-# Directories and file paths (to be adjusted to your actual paths)
-MONITOR_DIR = f'{dir_path}/monitor'  # Directory containing files to be monitored
-BACKUP_DIR = '/home/onezero/LOCK/prototype/backup'  # Directory where backups will be stored
-QUARANTINE_DIR = '/home/onezero/LOCK/prototype/quarantine'  # Directory where suspicious files will be quarantined
-HASH_FILE = 'hashes.csv'  # File where current hashes will be stored
-BACKUP_HASH_FILE = 'backup_hashes.csv'  # File where backup hashes will be stored
+# Directories and file paths
+MONITOR_CFG = f'{dir_path}/files_to_monitor.cfg'  # Config file listing files to monitor
+BACKUP_DIR = f'{dir_path}/backup'
+QUARANTINE_DIR = f'{dir_path}/quarantine'
+HASH_FILE = 'hashes.csv'
 
 # Create necessary directories if they don't exist
-os.makedirs(MONITOR_DIR, exist_ok=True)
 os.makedirs(BACKUP_DIR, exist_ok=True)
 os.makedirs(QUARANTINE_DIR, exist_ok=True)
 
-def create_service():
-    """ Placeholder for the OS-specific service creation logic """
-    logging.info("Service creation logic goes here.")
+running = True
+
+def handle_stop_signals(signum, frame):
+    global running
+    running = False
+    logging.info("Received stop signal, shutting down...")
+
+def create_scp_session(host, user, password):
+    """ Create an SCP session for file transfers """
+    ssh = paramiko.SSHClient()
+    ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+    ssh.connect(host, username=user, password=password)
+    return ssh
+
+def scp_transfer(ssh_session, files, remote_path):
+    """ Transfer files using SCP """
+    with SCPClient(ssh_session.get_transport()) as scp:
+        scp.put(files, remote_path)
 
 def hash_file(filepath):
     """ Generate SHA-256 hash for the specified file """
@@ -53,57 +74,63 @@ def hash_file(filepath):
         logging.error(f"Failed to hash file {filepath}: {e}")
         return None
 
-def initial_hashing():
-    """ Hash all files in the monitoring directory and backup the hashes """
+def backup_and_hash_files():
+    """ Backup and hash files listed in the .cfg file """
     hashes = {}
-    with open(HASH_FILE, 'w') as f, open(BACKUP_HASH_FILE, 'w') as bf:
-        for filename in os.listdir(MONITOR_DIR):
-            filepath = os.path.join(MONITOR_DIR, filename)
-            file_hash = hash_file(filepath)
-            if file_hash:
-                hashes[filepath] = file_hash
-                f.write(f"{filepath},{file_hash}\n")
-                bf.write(f"{filepath},{file_hash}\n")
-                # Create a backup copy of the file
-                shutil.copy2(filepath, BACKUP_DIR)
-                logging.info(f"Hashed and backed up {filepath}")
-    # Make hash storage read-only
-    os.chmod(HASH_FILE, 0o444)
+    with open(MONITOR_CFG, 'r') as cfg:
+        files_to_monitor = cfg.read().splitlines()
 
-def monitor_files():
-    """ Continuously monitor the files for changes """
-    while True:
-        with open(HASH_FILE, 'r') as f:
-            current_hashes = {line.split(',')[0]: line.split(',')[1].strip() for line in f.readlines()}
-        for filepath, saved_hash in current_hashes.items():
+    for filepath in files_to_monitor:
+        file_hash = hash_file(filepath)
+        if file_hash:
+            hashes[filepath] = file_hash
+            # Backup the file
+            shutil.copy2(filepath, BACKUP_DIR)
+            logging.info(f"Backed up and hashed file: {filepath}")
+
+    # Write hashes to file
+    with open(HASH_FILE, 'w') as f:
+        for path, file_hash in hashes.items():
+            f.write(f"{path},{file_hash}\n")
+
+    # SCP transfer the hashes and the backup
+    ssh_session = create_scp_session(SCP_SERVER, SCP_USER, SCP_PASSWORD)
+    scp_transfer(ssh_session, [HASH_FILE] + files_to_monitor, SCP_REMOTE_PATH)
+    ssh_session.close()
+
+    logging.info(f"Backup files and hashes transferred to SCP server.")
+
+    return hashes
+
+def monitor_files(hashes):
+    """ Monitor the files for any changes based on the hashes """
+    while running:
+        for filepath in hashes:
             if os.path.exists(filepath):
                 current_hash = hash_file(filepath)
-                if current_hash != saved_hash:
+                if current_hash != hashes[filepath]:
                     logging.warning(f"File changed or corrupted: {filepath}")
-                    quarantine_file(filepath)
+                    restore_file_from_backup(filepath)
             else:
                 logging.warning(f"File deleted or moved: {filepath}")
-                quarantine_file(filepath)
-        time.sleep(5)  # Interval for checking file changes
+        time.sleep(5)  # Modify as needed for your use case
 
-def quarantine_file(filepath):
-    """ Move the file to the quarantine directory and restore from backup if necessary """
-    # Extract the filename from the filepath
+def restore_file_from_backup(filepath):
+    """ Restore the file from the backup """
     filename = os.path.basename(filepath)
-    # Move the file to the quarantine directory
-    shutil.move(filepath, os.path.join(QUARANTINE_DIR, filename))
-    logging.info(f"Moved {filename} to quarantine.")
-    # Restore the file from the backup
     backup_filepath = os.path.join(BACKUP_DIR, filename)
     if os.path.exists(backup_filepath):
-        shutil.copy2(backup_filepath, MONITOR_DIR)
-        logging.info(f"Restored {filename} from backup.")
+        shutil.copy2(backup_filepath, filepath)
+        logging.info(f"Restored file from backup: {filename}")
+    else:
+        logging.error(f"Backup file not found for {filename}")
 
 def system_startup():
     """ Perform actions on system startup """
-    create_service()
-    initial_hashing()
-    monitor_files()
+    hashes = backup_and_hash_files()
+    monitor_files(hashes)
 
 if __name__ == "__main__":
+    signal.signal(signal.SIGTERM, handle_stop_signals)
+    signal.signal(signal.SIGINT, handle_stop_signals)
     system_startup()

@@ -1,6 +1,6 @@
 <mxfile host="65bd71144e">
     <diagram name="Page-1" id="U29332rxSKfejZdtEMYF">
-        <mxGraphModel dx="1075" dy="1051" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="0" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+        <mxGraphModel dx="2026" dy="1060" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="0" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
             <root>
                 <mxCell id="0"/>
                 <mxCell id="1" parent="0"/>
@@ -40,7 +40,7 @@
                 <mxCell id="J58E7H1g6Y6a5eLEYD46-10" value="File Validation on&amp;nbsp;&lt;br&gt;Quarantine section" style="rhombus;whiteSpace=wrap;html=1;fillColor=#6a00ff;fontColor=#ffffff;strokeColor=#3700CC;" parent="1" vertex="1">
                     <mxGeometry x="-131" y="-52" width="133" height="80" as="geometry"/>
                 </mxCell>
-                <mxCell id="42" style="edgeStyle=none;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="J58E7H1g6Y6a5eLEYD46-16" target="J58E7H1g6Y6a5eLEYD46-21">
+                <mxCell id="42" style="edgeStyle=none;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="J58E7H1g6Y6a5eLEYD46-16" target="J58E7H1g6Y6a5eLEYD46-21" edge="1">
                     <mxGeometry relative="1" as="geometry"/>
                 </mxCell>
                 <mxCell id="J58E7H1g6Y6a5eLEYD46-16" value="Keep copy of compromised file, Delete it and subsitute by orginial previous file saved on back-up" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#1ba1e2;fontColor=#ffffff;strokeColor=#006EAF;" parent="1" vertex="1">
@@ -80,7 +80,10 @@
                         </Array>
                     </mxGeometry>
                 </mxCell>
-                <mxCell id="2" value="Create a read only file and send this to a server via scp to store it a hash.csv file" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#a20025;fontColor=#ffffff;strokeColor=#6F0000;" parent="1" vertex="1">
+                <mxCell id="46" style="edgeStyle=none;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;" edge="1" parent="1" source="2" target="45">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="2" value="Hash storage" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#a20025;fontColor=#ffffff;strokeColor=#6F0000;" parent="1" vertex="1">
                     <mxGeometry x="380" y="-147" width="120" height="60" as="geometry"/>
                 </mxCell>
                 <mxCell id="13" style="edgeStyle=none;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="11" target="J58E7H1g6Y6a5eLEYD46-2" edge="1">
@@ -93,7 +96,7 @@
                     <mxGeometry x="358" y="-1" width="86" height="58" as="geometry"/>
                 </mxCell>
                 <mxCell id="18" value="&lt;b&gt;&lt;font style=&quot;font-size: 16px;&quot;&gt;System designed in python to monitor and validate files on an operating system&lt;/font&gt;&lt;/b&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" parent="1" vertex="1">
-                    <mxGeometry x="69" y="-264" width="627" height="31" as="geometry"/>
+                    <mxGeometry x="18" y="-310" width="627" height="31" as="geometry"/>
                 </mxCell>
                 <mxCell id="20" value="&lt;div style=&quot;&quot;&gt;&lt;b style=&quot;background-color: initial;&quot;&gt;DevOps&lt;/b&gt;&lt;span style=&quot;background-color: initial;&quot;&gt;:&lt;/span&gt;&lt;/div&gt;&lt;div style=&quot;&quot;&gt;1. Gather Requirements&lt;/div&gt;&lt;div style=&quot;&quot;&gt;2. Design Achitechture&lt;/div&gt;&lt;div style=&quot;&quot;&gt;3. Setup Rust Env&lt;/div&gt;&lt;div style=&quot;&quot;&gt;4. Implement Hashing&lt;/div&gt;&lt;div style=&quot;&quot;&gt;5. Develop Storage Mechanism&lt;/div&gt;&lt;div style=&quot;&quot;&gt;6. Validation Logic&lt;/div&gt;&lt;div style=&quot;&quot;&gt;7. Implement Quarantine System&lt;/div&gt;&lt;div style=&quot;&quot;&gt;8. Create Alert System&lt;/div&gt;&lt;div style=&quot;&quot;&gt;9. Socket&lt;/div&gt;&lt;div style=&quot;&quot;&gt;10. Testing&lt;/div&gt;&lt;div style=&quot;&quot;&gt;11. Deploy&lt;/div&gt;&lt;div style=&quot;&quot;&gt;&lt;br&gt;&lt;/div&gt;" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=default;fillColor=none;fontSize=16;" parent="1" vertex="1">
                     <mxGeometry x="706" y="275" width="252" height="261" as="geometry"/>
@@ -110,14 +113,17 @@
                 <mxCell id="28" value="Ansible" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#1ba1e2;fontColor=#ffffff;strokeColor=#006EAF;" parent="1" vertex="1">
                     <mxGeometry x="-280" y="-252" width="120" height="60" as="geometry"/>
                 </mxCell>
-                <mxCell id="37" value="&lt;ol&gt;&lt;li&gt;Content Modification&lt;/li&gt;&lt;li&gt;Metadata Changes&lt;/li&gt;&lt;li&gt;File Structure Alterations&lt;/li&gt;&lt;li&gt;Data Corruption&lt;/li&gt;&lt;li&gt;Encoding Changes&lt;/li&gt;&lt;li&gt;Adding or Removing Data&lt;/li&gt;&lt;li&gt;Normalization Changes&lt;/li&gt;&lt;/ol&gt;&lt;div&gt;Remember to watch for OS files, on all OS&lt;/div&gt;&lt;div&gt;types that are changing&lt;/div&gt;&lt;div&gt;constantly, these files shall not be hashed&lt;/div&gt;" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
-                    <mxGeometry x="668" y="-221" width="244" height="222" as="geometry"/>
+                <mxCell id="37" value="&lt;ol&gt;&lt;li&gt;Content Modification&lt;/li&gt;&lt;li&gt;Metadata Changes&lt;/li&gt;&lt;li&gt;File Structure Alterations&lt;/li&gt;&lt;li&gt;Data Corruption&lt;/li&gt;&lt;li&gt;Encoding Changes&lt;/li&gt;&lt;li&gt;Adding or Removing Data&lt;/li&gt;&lt;li&gt;Normalization Changes&lt;/li&gt;&lt;/ol&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" parent="1" vertex="1">
+                    <mxGeometry x="1049" y="-34" width="195" height="193" as="geometry"/>
                 </mxCell>
-                <mxCell id="38" value="Changes to watch for on hash" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
-                    <mxGeometry x="679" y="-224" width="177" height="26" as="geometry"/>
+                <mxCell id="38" value="Changes to watch for on hash" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" parent="1" vertex="1">
+                    <mxGeometry x="1058" y="-42" width="177" height="26" as="geometry"/>
                 </mxCell>
-                <mxCell id="44" value="Create a log file to see changes&lt;br&gt;Create a service file" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
-                    <mxGeometry x="694" y="3" width="187" height="41" as="geometry"/>
+                <mxCell id="44" value="Create a log file to see changes&lt;br&gt;Create a service file" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" parent="1" vertex="1">
+                    <mxGeometry x="1053" y="148" width="187" height="41" as="geometry"/>
+                </mxCell>
+                <mxCell id="45" value="O script vai enviar via SCP a pasta de &lt;br&gt;backups&amp;nbsp; para storage ( que irá conter os &lt;br&gt;backups originais dos &lt;br&gt;ficheiros a monitorizar), &lt;br&gt;a pasta terá deter o&lt;br&gt;&amp;nbsp;seguinte formato:&lt;br&gt;     &lt;a href=&quot;tg://bot_command?command=1_1_1_1&quot;&gt;/1_1_1_1&lt;/a&gt;&lt;a href=&quot;tg://bot_command?command=ficheiro1&quot;&gt;/ficheiro1&lt;/a&gt;&lt;br&gt;                     &lt;a href=&quot;tg://bot_command?command=ficheiro2&quot;&gt;/ficheiro2&lt;/a&gt;&lt;br&gt;&lt;br&gt;O script terá de trocar o nome da pasta dos backups para o IP da maquina&lt;br&gt; terá de trocar o &quot;.&quot; por &quot;_&quot; para não haver confilitos.&lt;br&gt;Depois na fase de monitorização, se o script detetar uma alteração, terá&lt;br&gt; de mover para  quarentena (pasta local no pc do host) e irá buscar via &lt;br&gt;SCP a pasta correta do ip e irá retirar o ficheiro que irá substituir.&lt;br&gt;Exemplo de comando do SCP:&lt;br&gt;$ scp admin@IP_SERVIDOR_CENTRAL://caminho_ate_pasta/1_1_1_1/fichero1" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+                    <mxGeometry x="552" y="-238" width="449" height="242" as="geometry"/>
                 </mxCell>
             </root>
         </mxGraphModel>
