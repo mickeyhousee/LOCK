@@ -28,10 +28,10 @@ logging.basicConfig(
 )
 
 # SCP server details
-SCP_SERVER = '192.168.151.105'
-SCP_USER = 'joaog'
-SCP_PASSWORD = 'joaog'  # It's recommended to use SSH key authentication instead
-SCP_REMOTE_PATH = '/home/joaog'
+SCP_SERVER = ''
+SCP_USER = ''
+SCP_PASSWORD = ''  # It's recommended to use SSH key authentication instead
+SCP_REMOTE_PATH = ''
 
 # Relative Path
 dir_path = os.path.dirname(os.path.realpath(__file__))
