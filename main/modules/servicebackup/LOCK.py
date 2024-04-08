@@ -1,8 +1,15 @@
+#!/usr/bin/env python3
+"""__summary__
+Script made for LS24
+System designed in python to monitor and validate files on an operating system
+
+Author: Development Team COCIBER PT
+"""
 import hashlib
 import os
 import shutil
 import logging
-import time  # This import is necessary for time.sleep()
+import time 
 from datetime import datetime
 from logging.handlers import RotatingFileHandler
 
@@ -16,11 +23,13 @@ logging.basicConfig(
         logging.StreamHandler()
     ]
 )
+# Relative Path
+dir_path = os.path.dirname(os.path.realpath(__file__))
 
 # Directories and file paths (to be adjusted to your actual paths)
-MONITOR_DIR = '/home/joaog/LOCK/prototype/files'  # Directory containing files to be monitored
-BACKUP_DIR = '/home/joaog/LOCK/prototype/backup'  # Directory where backups will be stored
-QUARANTINE_DIR = '/home/joaog/LOCK/prototype/quarantine'  # Directory where suspicious files will be quarantined
+MONITOR_DIR = f'{dir_path}/monitor'  # Directory containing files to be monitored
+BACKUP_DIR = '/home/onezero/LOCK/prototype/backup'  # Directory where backups will be stored
+QUARANTINE_DIR = '/home/onezero/LOCK/prototype/quarantine'  # Directory where suspicious files will be quarantined
 HASH_FILE = 'hashes.csv'  # File where current hashes will be stored
 BACKUP_HASH_FILE = 'backup_hashes.csv'  # File where backup hashes will be stored
 
