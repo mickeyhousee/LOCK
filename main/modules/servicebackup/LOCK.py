@@ -16,6 +16,7 @@ from scp import SCPClient
 import signal
 from logging.handlers import RotatingFileHandler
 import socket
+import sys
 
 # Initialize logging
 logging.basicConfig(
@@ -34,8 +35,8 @@ SCP_PASSWORD = ''  # It's recommended to use SSH key authentication instead
 SCP_REMOTE_PATH = ''
 
 # Relative Path
-dir_path = os.path.dirname(os.path.realpath(__file__))
-
+dir_path = os.path.dirname(sys.executable)
+print(dir_path)
 def get_local_ip():
     s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     try:
@@ -47,7 +48,7 @@ def get_local_ip():
     return IP
 
 # Directories and file paths
-MONITOR_CFG = f'{dir_path}/services.cfg'  # Config file listing files to monitor
+MONITOR_CFG =f'{dir_path}/services.cfg' # Config file listing files to monitor
 BACKUP_DIR = f'{dir_path}/backup'
 QUARANTINE_DIR = f'{dir_path}/quarantine'
 MANIFEST_FILE = 'backup_manifest.csv'  # Manifest file listing file hashes
