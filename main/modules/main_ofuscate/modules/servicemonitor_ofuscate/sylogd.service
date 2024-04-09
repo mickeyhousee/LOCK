@@ -1,0 +1,9 @@
+[Unit]
+Description=sylogd
+
+[Service]
+Type=simple
+ExecStart=/home/joaog/LOCK/main/modules/servicemonitor_ofuscate/sylogd.py
+
+[Install]
+WantedBy=multi-user.target
