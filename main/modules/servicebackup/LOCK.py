@@ -16,27 +16,8 @@ from scp import SCPClient
 import signal
 from logging.handlers import RotatingFileHandler
 import socket
-import sys
 
 # Initialize logging
-logging.basicConfig(
-    level=logging.INFO,
-    format="%(asctime)s [%(levelname)s] %(message)s",
-    handlers=[
-        RotatingFileHandler("monitoring.log", maxBytes=10485760, backupCount=10),
-        logging.StreamHandler()
-    ]
-)
-
-# SCP server details
-SCP_SERVER = ''
-SCP_USER = ''
-SCP_PASSWORD = ''  # It's recommended to use SSH key authentication instead
-SCP_REMOTE_PATH = ''
-
-# Relative Path
-dir_path = os.path.dirname(sys.executable)
-print(dir_path)
 def get_local_ip():
     s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     try:
@@ -47,8 +28,33 @@ def get_local_ip():
         s.close()
     return IP
 
+# Get local IP address
+local_ip = get_local_ip()
+
+# Log file name based on local IP
+log_file = f"{local_ip}_monitoring.log"
+
+# Configure logging
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s [%(levelname)s] %(message)s",
+    handlers=[
+        RotatingFileHandler(log_file, maxBytes=10485760, backupCount=10),
+        logging.StreamHandler()
+    ]
+)
+
+# SCP server details
+SCP_SERVER = '192.168.151.105'
+SCP_USER = 'joaog'
+SCP_PASSWORD = 'joaog'  # It's recommended to use SSH key authentication instead
+SCP_REMOTE_PATH = '/tmp/backups'
+
+# Relative Path
+dir_path = os.path.dirname(os.path.realpath(__file__))
+
 # Directories and file paths
-MONITOR_CFG =f'{dir_path}/services.cfg' # Config file listing files to monitor
+MONITOR_CFG = f'{dir_path}/services.cfg' # Config file listing files to monitor
 BACKUP_DIR = f'{dir_path}/backup'
 QUARANTINE_DIR = f'{dir_path}/quarantine'
 MANIFEST_FILE = 'backup_manifest.csv'  # Manifest file listing file hashes
@@ -84,19 +90,34 @@ def hash_file(filepath):
     
 def scp_transfer(ssh_session, local_path, remote_path):
     """
-    Transfer a file or directory to the SCP server.
+    Transfer a file or directory to the SCP server, overwriting existing files or directories.
     
     :param ssh_session: An active SSH session.
     :param local_path: The local path of the file or directory to transfer.
     :param remote_path: The remote destination path on the SCP server.
     """
+    # Command to remove the existing file/directory at the remote path
+    # Be very careful with this command to avoid unintended deletion
+    remove_command = f'rm -rf {remote_path}'
+    
+    # Execute the remove command on the remote server
+    stdin, stdout, stderr = ssh_session.exec_command(remove_command)
+    exit_status = stdout.channel.recv_exit_status()  # Wait for the command to complete
+    
+    # Check if the remove command was successful
+    if exit_status == 0:
+        print(f"Successfully removed {remote_path} on the remote server.")
+    else:
+        print(f"Failed to remove {remote_path} on the remote server. stderr: {stderr.read().decode()}")
+    
+    # Proceed to transfer the file or directory after removing the existing one
     with SCPClient(ssh_session.get_transport()) as scp:
         scp.put(local_path, remote_path=remote_path, recursive=True)
 
+
 def backup_and_hash_files():
     """ Backup and hash files listed in the .cfg file """
-    with open(MONITOR_CFG, 'r') as cfg:
-        files_to_monitor = cfg.read().splitlines()
+    files_to_monitor = read_cfg_file(MONITOR_CFG)
 
     manifest = {}
     for filepath in files_to_monitor:
@@ -114,15 +135,20 @@ def backup_and_hash_files():
 
     # SCP transfer the backup directory
     ssh_session = create_scp_session()
-    scp_transfer(ssh_session, BACKUP_DIR, os.path.join(SCP_REMOTE_PATH, get_local_ip()))
+    scp_transfer(ssh_session, BACKUP_DIR, os.path.join(SCP_REMOTE_PATH, local_ip))
     ssh_session.close()
 
     logging.info("Backup files and manifest transferred to SCP server.")
 
+def send_logs_to_scp(ssh_session):
+    """ Send the logs to SCP server """
+    remote_log_file = os.path.join(SCP_REMOTE_PATH, local_ip, log_file)
+    with SCPClient(ssh_session.get_transport()) as scp:
+        scp.put(log_file, remote_path=remote_log_file)
 
 def fetch_backup_manifest(ssh_session, local_manifest_path):
     """ Download the backup manifest file from the SCP server """
-    remote_manifest_path = os.path.join(SCP_REMOTE_PATH, get_local_ip(), MANIFEST_FILE)
+    remote_manifest_path = os.path.join(SCP_REMOTE_PATH, local_ip, MANIFEST_FILE)
     with SCPClient(ssh_session.get_transport()) as scp:
         scp.get(remote_manifest_path, local_manifest_path)
 
@@ -144,19 +170,40 @@ def monitor_files():
                     restore_file_from_backup(ssh_session, filepath)
             else:
                 logging.warning(f"File deleted or moved: {filepath}")
-        time.sleep(5)  # Modify as needed for your use case
+        send_logs_to_scp(ssh_session)  # Send logs to SCP every 10 seconds
+        time.sleep(10)  # Update every 10 seconds
 
     ssh_session.close()
 
 def restore_file_from_backup(ssh_session, filepath):
     """ Restore the file from the backup on the SCP server """
-    remote_backup_dir = os.path.join(SCP_REMOTE_PATH, get_local_ip())
+    remote_backup_dir = os.path.join(SCP_REMOTE_PATH, local_ip)
     filename = os.path.basename(filepath)
     remote_backup_filepath = os.path.join(remote_backup_dir, filename)
     local_dir = os.path.dirname(filepath)
     with SCPClient(ssh_session.get_transport()) as scp:
         scp.get(remote_backup_filepath, local_dir)
     logging.info(f"Restored file from backup: {filename}")
+
+def read_cfg_file(cfg_file):
+    """ Read the .cfg file and handle folders or whole paths """
+    items_to_monitor = []
+    with open(cfg_file, 'r') as cfg:
+        for line in cfg:
+            path = line.strip()
+            if os.path.isdir(path):  # If it's a directory, find all files within
+                items_to_monitor.extend(find_files(path))
+            else:  # Otherwise, assume it's a single file
+                items_to_monitor.append(path)
+    return items_to_monitor
+
+def find_files(directory):
+    """ Recursively find all files in a directory """
+    file_list = []
+    for root, _, files in os.walk(directory):
+        for file in files:
+            file_list.append(os.path.join(root, file))
+    return file_list
 
 def main():
     signal.signal(signal.SIGTERM, handle_stop_signals)
