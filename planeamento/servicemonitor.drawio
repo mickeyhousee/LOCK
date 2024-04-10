@@ -1,122 +1,122 @@
-<mxfile host="app.diagrams.net" modified="2024-04-10T12:30:50.041Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36" etag="3aH1EkoM7nGckgaCJa8t" version="24.2.0" type="device">
-  <diagram name="Página-1" id="lE8kXnp0sbKmlZfSVapm">
-    <mxGraphModel dx="1687" dy="878" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
-      <root>
-        <mxCell id="0" />
-        <mxCell id="1" parent="0" />
-        <mxCell id="wQrC2ejXS4kRiXjeC5ww-3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="wQrC2ejXS4kRiXjeC5ww-2" target="wQrC2ejXS4kRiXjeC5ww-4">
-          <mxGeometry relative="1" as="geometry">
-            <mxPoint x="280" y="400" as="targetPoint" />
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="wQrC2ejXS4kRiXjeC5ww-2" value="Execute&lt;div&gt;installservice.py&lt;/div&gt;" style="shape=parallelogram;perimeter=parallelogramPerimeter;whiteSpace=wrap;html=1;fixedSize=1;" vertex="1" parent="1">
-          <mxGeometry x="70" y="370" width="120" height="60" as="geometry" />
-        </mxCell>
-        <mxCell id="wQrC2ejXS4kRiXjeC5ww-11" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="wQrC2ejXS4kRiXjeC5ww-4" target="wQrC2ejXS4kRiXjeC5ww-10">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <mxCell id="wQrC2ejXS4kRiXjeC5ww-4" value="Store sylogd.service&lt;div&gt;on default dir&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
-          <mxGeometry x="360" y="370" width="120" height="60" as="geometry" />
-        </mxCell>
-        <mxCell id="wQrC2ejXS4kRiXjeC5ww-5" value="Grab sylogd.service&lt;span style=&quot;background-color: initial;&quot;&gt;&amp;nbsp;&lt;/span&gt;" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
-          <mxGeometry x="200" y="380" width="130" height="30" as="geometry" />
-        </mxCell>
-        <mxCell id="wQrC2ejXS4kRiXjeC5ww-13" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="wQrC2ejXS4kRiXjeC5ww-10" target="wQrC2ejXS4kRiXjeC5ww-12">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <mxCell id="wQrC2ejXS4kRiXjeC5ww-10" value="Enable and Start&amp;nbsp;&lt;div&gt;sylogd.service&lt;/div&gt;" style="whiteSpace=wrap;html=1;rounded=0;" vertex="1" parent="1">
-          <mxGeometry x="560" y="370" width="120" height="60" as="geometry" />
-        </mxCell>
-        <mxCell id="wQrC2ejXS4kRiXjeC5ww-17" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="wQrC2ejXS4kRiXjeC5ww-12" target="wQrC2ejXS4kRiXjeC5ww-16">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <mxCell id="wQrC2ejXS4kRiXjeC5ww-12" value="Execute&lt;div&gt;sylogd.py&lt;br&gt;&lt;/div&gt;" style="shape=parallelogram;perimeter=parallelogramPerimeter;whiteSpace=wrap;html=1;fixedSize=1;rounded=0;" vertex="1" parent="1">
-          <mxGeometry x="560" y="510" width="120" height="60" as="geometry" />
-        </mxCell>
-        <mxCell id="wQrC2ejXS4kRiXjeC5ww-15" value="servicemonitor System" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontStyle=1;fontSize=26;" vertex="1" parent="1">
-          <mxGeometry x="315" y="240" width="200" height="30" as="geometry" />
-        </mxCell>
-        <mxCell id="wQrC2ejXS4kRiXjeC5ww-19" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="wQrC2ejXS4kRiXjeC5ww-16" target="wQrC2ejXS4kRiXjeC5ww-18">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <mxCell id="wQrC2ejXS4kRiXjeC5ww-16" value="Load the &quot;services.cfg&quot; content" style="whiteSpace=wrap;html=1;rounded=0;" vertex="1" parent="1">
-          <mxGeometry x="350" y="505" width="130" height="70" as="geometry" />
-        </mxCell>
-        <mxCell id="wQrC2ejXS4kRiXjeC5ww-23" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="wQrC2ejXS4kRiXjeC5ww-18" target="wQrC2ejXS4kRiXjeC5ww-22">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <mxCell id="wQrC2ejXS4kRiXjeC5ww-18" value="Continuous monitoring of services" style="whiteSpace=wrap;html=1;rounded=0;" vertex="1" parent="1">
-          <mxGeometry x="355" y="660" width="120" height="60" as="geometry" />
-        </mxCell>
-        <mxCell id="wQrC2ejXS4kRiXjeC5ww-25" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="wQrC2ejXS4kRiXjeC5ww-22" target="wQrC2ejXS4kRiXjeC5ww-24">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <mxCell id="wQrC2ejXS4kRiXjeC5ww-27" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="wQrC2ejXS4kRiXjeC5ww-22" target="wQrC2ejXS4kRiXjeC5ww-26">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <mxCell id="wQrC2ejXS4kRiXjeC5ww-22" value="IF" style="rhombus;whiteSpace=wrap;html=1;rounded=0;" vertex="1" parent="1">
-          <mxGeometry x="375" y="790" width="80" height="80" as="geometry" />
-        </mxCell>
-        <mxCell id="wQrC2ejXS4kRiXjeC5ww-33" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="wQrC2ejXS4kRiXjeC5ww-24" target="wQrC2ejXS4kRiXjeC5ww-32">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <mxCell id="wQrC2ejXS4kRiXjeC5ww-24" value="Service DOWN" style="whiteSpace=wrap;html=1;rounded=0;" vertex="1" parent="1">
-          <mxGeometry x="195" y="800" width="120" height="60" as="geometry" />
-        </mxCell>
-        <mxCell id="wQrC2ejXS4kRiXjeC5ww-28" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="wQrC2ejXS4kRiXjeC5ww-26" target="wQrC2ejXS4kRiXjeC5ww-18">
-          <mxGeometry relative="1" as="geometry">
-            <mxPoint x="575" y="690" as="targetPoint" />
-            <Array as="points">
-              <mxPoint x="575" y="690" />
-            </Array>
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="wQrC2ejXS4kRiXjeC5ww-26" value="Service UP" style="whiteSpace=wrap;html=1;rounded=0;" vertex="1" parent="1">
-          <mxGeometry x="515" y="800" width="120" height="60" as="geometry" />
-        </mxCell>
-        <mxCell id="wQrC2ejXS4kRiXjeC5ww-36" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="wQrC2ejXS4kRiXjeC5ww-32" target="wQrC2ejXS4kRiXjeC5ww-35">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <mxCell id="wQrC2ejXS4kRiXjeC5ww-32" value="Restart Service" style="whiteSpace=wrap;html=1;rounded=0;" vertex="1" parent="1">
-          <mxGeometry x="195" y="940" width="120" height="60" as="geometry" />
-        </mxCell>
-        <mxCell id="wQrC2ejXS4kRiXjeC5ww-38" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="wQrC2ejXS4kRiXjeC5ww-35" target="wQrC2ejXS4kRiXjeC5ww-37">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <mxCell id="wQrC2ejXS4kRiXjeC5ww-41" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="wQrC2ejXS4kRiXjeC5ww-35" target="wQrC2ejXS4kRiXjeC5ww-40">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <mxCell id="wQrC2ejXS4kRiXjeC5ww-35" value="IF" style="rhombus;whiteSpace=wrap;html=1;rounded=0;" vertex="1" parent="1">
-          <mxGeometry x="215" y="1030" width="80" height="80" as="geometry" />
-        </mxCell>
-        <mxCell id="wQrC2ejXS4kRiXjeC5ww-39" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="wQrC2ejXS4kRiXjeC5ww-37" target="wQrC2ejXS4kRiXjeC5ww-18">
-          <mxGeometry relative="1" as="geometry">
-            <mxPoint x="95" y="680" as="targetPoint" />
-            <Array as="points">
-              <mxPoint x="95" y="860" />
-              <mxPoint x="96" y="860" />
-              <mxPoint x="96" y="690" />
-            </Array>
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="wQrC2ejXS4kRiXjeC5ww-37" value="Service restarted&amp;nbsp;successfully" style="whiteSpace=wrap;html=1;rounded=0;" vertex="1" parent="1">
-          <mxGeometry x="35" y="1040" width="120" height="60" as="geometry" />
-        </mxCell>
-        <mxCell id="wQrC2ejXS4kRiXjeC5ww-43" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="wQrC2ejXS4kRiXjeC5ww-40" target="wQrC2ejXS4kRiXjeC5ww-42">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <mxCell id="wQrC2ejXS4kRiXjeC5ww-40" value="Service not restarted" style="whiteSpace=wrap;html=1;rounded=0;" vertex="1" parent="1">
-          <mxGeometry x="355" y="1040" width="120" height="60" as="geometry" />
-        </mxCell>
-        <mxCell id="wQrC2ejXS4kRiXjeC5ww-44" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="wQrC2ejXS4kRiXjeC5ww-42" target="wQrC2ejXS4kRiXjeC5ww-32">
-          <mxGeometry relative="1" as="geometry">
-            <mxPoint x="320" y="970" as="targetPoint" />
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="wQrC2ejXS4kRiXjeC5ww-42" value="Wait 5 seconds" style="whiteSpace=wrap;html=1;rounded=0;" vertex="1" parent="1">
-          <mxGeometry x="354" y="940" width="120" height="60" as="geometry" />
-        </mxCell>
-      </root>
-    </mxGraphModel>
-  </diagram>
+<mxfile host="65bd71144e">
+    <diagram name="Página-1" id="lE8kXnp0sbKmlZfSVapm">
+        <mxGraphModel dx="1312" dy="779" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+            <root>
+                <mxCell id="0"/>
+                <mxCell id="1" parent="0"/>
+                <mxCell id="wQrC2ejXS4kRiXjeC5ww-3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="wQrC2ejXS4kRiXjeC5ww-2" target="wQrC2ejXS4kRiXjeC5ww-4" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="280" y="400" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="wQrC2ejXS4kRiXjeC5ww-2" value="Execute&lt;div&gt;installservice.py&lt;/div&gt;" style="shape=parallelogram;perimeter=parallelogramPerimeter;whiteSpace=wrap;html=1;fixedSize=1;" parent="1" vertex="1">
+                    <mxGeometry x="70" y="370" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="wQrC2ejXS4kRiXjeC5ww-11" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="wQrC2ejXS4kRiXjeC5ww-4" target="wQrC2ejXS4kRiXjeC5ww-10" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="wQrC2ejXS4kRiXjeC5ww-4" value="Store sylogd.service&lt;div&gt;on default dir&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+                    <mxGeometry x="360" y="370" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="wQrC2ejXS4kRiXjeC5ww-5" value="Grab sylogd.service&lt;span style=&quot;background-color: initial;&quot;&gt;&amp;nbsp;&lt;/span&gt;" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
+                    <mxGeometry x="200" y="380" width="130" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="wQrC2ejXS4kRiXjeC5ww-13" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="wQrC2ejXS4kRiXjeC5ww-10" target="wQrC2ejXS4kRiXjeC5ww-12" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="wQrC2ejXS4kRiXjeC5ww-10" value="Enable and Start&amp;nbsp;&lt;div&gt;sylogd.service&lt;/div&gt;" style="whiteSpace=wrap;html=1;rounded=0;" parent="1" vertex="1">
+                    <mxGeometry x="560" y="370" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="wQrC2ejXS4kRiXjeC5ww-17" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="wQrC2ejXS4kRiXjeC5ww-12" target="wQrC2ejXS4kRiXjeC5ww-16" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="wQrC2ejXS4kRiXjeC5ww-12" value="Execute&lt;div&gt;sylogd.py&lt;br&gt;&lt;/div&gt;" style="shape=parallelogram;perimeter=parallelogramPerimeter;whiteSpace=wrap;html=1;fixedSize=1;rounded=0;" parent="1" vertex="1">
+                    <mxGeometry x="560" y="510" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="wQrC2ejXS4kRiXjeC5ww-15" value="servicemonitor System" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontStyle=1;fontSize=26;" parent="1" vertex="1">
+                    <mxGeometry x="280" y="240" width="200" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="wQrC2ejXS4kRiXjeC5ww-19" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="wQrC2ejXS4kRiXjeC5ww-16" target="wQrC2ejXS4kRiXjeC5ww-18" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="wQrC2ejXS4kRiXjeC5ww-16" value="Load the &quot;services.cfg&quot; content" style="whiteSpace=wrap;html=1;rounded=0;" parent="1" vertex="1">
+                    <mxGeometry x="350" y="505" width="130" height="70" as="geometry"/>
+                </mxCell>
+                <mxCell id="wQrC2ejXS4kRiXjeC5ww-23" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="wQrC2ejXS4kRiXjeC5ww-18" target="wQrC2ejXS4kRiXjeC5ww-22" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="wQrC2ejXS4kRiXjeC5ww-18" value="Continuous monitoring of services" style="whiteSpace=wrap;html=1;rounded=0;" parent="1" vertex="1">
+                    <mxGeometry x="355" y="660" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="wQrC2ejXS4kRiXjeC5ww-25" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="wQrC2ejXS4kRiXjeC5ww-22" target="wQrC2ejXS4kRiXjeC5ww-24" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="wQrC2ejXS4kRiXjeC5ww-27" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="wQrC2ejXS4kRiXjeC5ww-22" target="wQrC2ejXS4kRiXjeC5ww-26" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="wQrC2ejXS4kRiXjeC5ww-22" value="IF" style="rhombus;whiteSpace=wrap;html=1;rounded=0;" parent="1" vertex="1">
+                    <mxGeometry x="375" y="790" width="80" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="wQrC2ejXS4kRiXjeC5ww-33" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="wQrC2ejXS4kRiXjeC5ww-24" target="wQrC2ejXS4kRiXjeC5ww-32" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="wQrC2ejXS4kRiXjeC5ww-24" value="Service DOWN" style="whiteSpace=wrap;html=1;rounded=0;" parent="1" vertex="1">
+                    <mxGeometry x="195" y="800" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="wQrC2ejXS4kRiXjeC5ww-28" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="wQrC2ejXS4kRiXjeC5ww-26" target="wQrC2ejXS4kRiXjeC5ww-18" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="575" y="690" as="targetPoint"/>
+                        <Array as="points">
+                            <mxPoint x="575" y="690"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="wQrC2ejXS4kRiXjeC5ww-26" value="Service UP" style="whiteSpace=wrap;html=1;rounded=0;" parent="1" vertex="1">
+                    <mxGeometry x="515" y="800" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="wQrC2ejXS4kRiXjeC5ww-36" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="wQrC2ejXS4kRiXjeC5ww-32" target="wQrC2ejXS4kRiXjeC5ww-35" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="wQrC2ejXS4kRiXjeC5ww-32" value="Restart Service" style="whiteSpace=wrap;html=1;rounded=0;" parent="1" vertex="1">
+                    <mxGeometry x="195" y="940" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="wQrC2ejXS4kRiXjeC5ww-38" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="wQrC2ejXS4kRiXjeC5ww-35" target="wQrC2ejXS4kRiXjeC5ww-37" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="wQrC2ejXS4kRiXjeC5ww-41" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="wQrC2ejXS4kRiXjeC5ww-35" target="wQrC2ejXS4kRiXjeC5ww-40" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="wQrC2ejXS4kRiXjeC5ww-35" value="IF" style="rhombus;whiteSpace=wrap;html=1;rounded=0;" parent="1" vertex="1">
+                    <mxGeometry x="215" y="1030" width="80" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="wQrC2ejXS4kRiXjeC5ww-39" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="wQrC2ejXS4kRiXjeC5ww-37" target="wQrC2ejXS4kRiXjeC5ww-18" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="95" y="680" as="targetPoint"/>
+                        <Array as="points">
+                            <mxPoint x="95" y="860"/>
+                            <mxPoint x="96" y="860"/>
+                            <mxPoint x="96" y="690"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="wQrC2ejXS4kRiXjeC5ww-37" value="Service restarted&amp;nbsp;successfully" style="whiteSpace=wrap;html=1;rounded=0;" parent="1" vertex="1">
+                    <mxGeometry x="35" y="1040" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="wQrC2ejXS4kRiXjeC5ww-43" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="wQrC2ejXS4kRiXjeC5ww-40" target="wQrC2ejXS4kRiXjeC5ww-42" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="wQrC2ejXS4kRiXjeC5ww-40" value="Service not restarted" style="whiteSpace=wrap;html=1;rounded=0;" parent="1" vertex="1">
+                    <mxGeometry x="355" y="1040" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="wQrC2ejXS4kRiXjeC5ww-44" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="wQrC2ejXS4kRiXjeC5ww-42" target="wQrC2ejXS4kRiXjeC5ww-32" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="320" y="970" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="wQrC2ejXS4kRiXjeC5ww-42" value="Wait 5 seconds" style="whiteSpace=wrap;html=1;rounded=0;" parent="1" vertex="1">
+                    <mxGeometry x="354" y="940" width="120" height="60" as="geometry"/>
+                </mxCell>
+            </root>
+        </mxGraphModel>
+    </diagram>
 </mxfile>

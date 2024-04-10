@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import subprocess
+import os
 
 def install_service(file_path, service_file_path, service_name):
     try:
@@ -36,8 +37,8 @@ def install_service(file_path, service_file_path, service_name):
     except Exception as e:
         print(f'An unexpected error occurred: {e}')
 
-
-file_path = "/home/joaog/LOCK/main/modules/servicemonitor_ofuscate/sylogd.py"
-service_file_path = "/home/joaog/LOCK/main/modules/servicemonitor_ofuscate/sylogd.service"
+dir_path = os.path.dirname(os.path.realpath(__file__))
+file_path = f"{dir_path}/sylogd.py"
+service_file_path = f"{dir_path}/sylogd.service"
 service_name = "sylogd"
 install_service(file_path, service_file_path, service_name)

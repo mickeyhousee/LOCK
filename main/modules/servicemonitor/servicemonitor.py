@@ -14,9 +14,11 @@ import platform
 import logging
 
 def setup_logging(log_file):
+    """Set up logging configuration."""
     logging.basicConfig(filename=log_file, level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
 def check_service(service_name):
+    """Check if a service is running."""
     if platform.system() == "Linux":
         try:
             subprocess.check_output(["systemctl", "status", service_name])
@@ -34,6 +36,7 @@ def check_service(service_name):
         sys.exit(1)
 
 def start_service(service_name):
+    """Start a service."""
     if platform.system() == "Linux":
         try:
             subprocess.check_output(["sudo", "systemctl", "start", service_name])
@@ -51,10 +54,12 @@ def start_service(service_name):
         sys.exit(1)
 
 def read_services_from_config(config_file):
+    """Read services from a configuration file."""
     with open(config_file, 'r') as file:
         return [line.strip() for line in file.readlines() if line.strip()]
 
 def monitor_services(services):
+    """Monitor services based on the provided list."""
     while True:
         for service in services:
             if not check_service(service):
