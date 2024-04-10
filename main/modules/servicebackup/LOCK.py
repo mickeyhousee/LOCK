@@ -16,6 +16,8 @@ from scp import SCPClient
 import signal
 from logging.handlers import RotatingFileHandler
 import socket
+import os
+import stat
 
 # Initialize logging
 def get_local_ip():
@@ -90,29 +92,30 @@ def hash_file(filepath):
     
 def scp_transfer(ssh_session, local_path, remote_path):
     """
-    Transfer a file or directory to the SCP server, overwriting existing files or directories.
+    Transfer a file or directory to the SCP server, ensuring the remote path exists.
     
     :param ssh_session: An active SSH session.
     :param local_path: The local path of the file or directory to transfer.
     :param remote_path: The remote destination path on the SCP server.
     """
-    # Command to remove the existing file/directory at the remote path
-    # Be very careful with this command to avoid unintended deletion
-    remove_command = f'rm -rf {remote_path}'
+    # Command to create the remote directory structure if it doesn't exist
+    mkdir_command = f'mkdir -p {remote_path}'
     
-    # Execute the remove command on the remote server
-    stdin, stdout, stderr = ssh_session.exec_command(remove_command)
+    # Execute the mkdir command on the remote server
+    stdin, stdout, stderr = ssh_session.exec_command(mkdir_command)
     exit_status = stdout.channel.recv_exit_status()  # Wait for the command to complete
     
-    # Check if the remove command was successful
     if exit_status == 0:
-        print(f"Successfully removed {remote_path} on the remote server.")
+        logging.info(f"Ensured remote directory exists: {remote_path}.")
     else:
-        print(f"Failed to remove {remote_path} on the remote server. stderr: {stderr.read().decode()}")
-    
-    # Proceed to transfer the file or directory after removing the existing one
+        logging.error(f"Failed to ensure remote directory exists: {remote_path}. stderr: {stderr.read().decode()}")
+        return  # Exit if the directory could not be created
+
+    # Proceed to transfer the file or directory
     with SCPClient(ssh_session.get_transport()) as scp:
         scp.put(local_path, remote_path=remote_path, recursive=True)
+        logging.info(f"Successfully transferred {local_path} to {remote_path}.")
+
 
 
 def backup_and_hash_files():
@@ -147,43 +150,85 @@ def send_logs_to_scp(ssh_session):
         scp.put(log_file, remote_path=remote_log_file)
 
 def fetch_backup_manifest(ssh_session, local_manifest_path):
-    """ Download the backup manifest file from the SCP server """
+    """Download the backup manifest file from the SCP server."""
     remote_manifest_path = os.path.join(SCP_REMOTE_PATH, local_ip, MANIFEST_FILE)
+    
+    # Attempt to check if the remote manifest exists before fetching
+    stdin, stdout, stderr = ssh_session.exec_command(f"test -f {remote_manifest_path} && echo 'exists' || echo 'not exists'")
+    if stdout.read().decode().strip() != "exists":
+        logging.error(f"Remote manifest file does not exist: {remote_manifest_path}")
+        # Handle the error (e.g., retry, create a new file, or abort)
+        return
+    
     with SCPClient(ssh_session.get_transport()) as scp:
-        scp.get(remote_manifest_path, local_manifest_path)
+        try:
+            scp.get(remote_manifest_path, local_manifest_path)
+        except SCPException as e:
+            logging.error(f"Failed to fetch manifest: {e}")
+            # Additional error handling here
+
 
 def monitor_files():
-    """ Monitor the files for any changes based on the backup manifest from the SCP server """
+    """Monitor the files for any changes based on the backup manifest from the SCP server."""
     ssh_session = create_scp_session()
     local_manifest_path = os.path.join(BACKUP_DIR, MANIFEST_FILE)
     fetch_backup_manifest(ssh_session, local_manifest_path)
     
+    # Load the backup hashes from the manifest file
+    backup_hashes = {}
     with open(local_manifest_path, 'r') as manifest:
-        backup_hashes = {line.split(',')[0]: line.strip().split(',')[1] for line in manifest.readlines()}
+        for line in manifest:
+            filepath, file_hash = line.strip().split(',', 1)
+            backup_hashes[filepath] = file_hash
 
     while running:
-        for filepath, backup_hash in backup_hashes.items():
+        for filepath, expected_hash in backup_hashes.items():
+            # Check if the file exists
             if os.path.exists(filepath):
+                # If it exists, hash the current file and compare
                 current_hash = hash_file(filepath)
-                if current_hash != backup_hash:
+                if current_hash != expected_hash:
                     logging.warning(f"File changed or corrupted: {filepath}")
-                    restore_file_from_backup(ssh_session, filepath)
+                    restore_file_from_backup(ssh_session, filepath, expected_hash)
             else:
+                # If the file does not exist, restore it from backup
                 logging.warning(f"File deleted or moved: {filepath}")
-        send_logs_to_scp(ssh_session)  # Send logs to SCP every 10 seconds
-        time.sleep(10)  # Update every 10 seconds
+                restore_file_from_backup(ssh_session, filepath, expected_hash)
+                
+            # Consider adding a short sleep here if you're monitoring a large number of files
+            # to reduce CPU usage. For example, time.sleep(0.1)
+
+        # Optionally, send logs to SCP every cycle or at fixed intervals
+        # This is a placeholder function call; implement according to your logging requirements
+        # send_logs_to_scp(ssh_session)
+        
+        # Wait some time before the next check to reduce load on the server
+        time.sleep(10)  # Adjust the sleep time as needed
 
     ssh_session.close()
 
-def restore_file_from_backup(ssh_session, filepath):
-    """ Restore the file from the backup on the SCP server """
+
+def restore_file_from_backup(ssh_session, filepath, expected_hash):
+    """Restore the file from the backup on the SCP server and check its integrity."""
     remote_backup_dir = os.path.join(SCP_REMOTE_PATH, local_ip)
     filename = os.path.basename(filepath)
-    remote_backup_filepath = os.path.join(remote_backup_dir, filename)
+    remote_backup_filepath = os.path.join(remote_backup_dir, 'backup', filename)
     local_dir = os.path.dirname(filepath)
+    
+    # Ensure local directory structure exists
+    os.makedirs(local_dir, exist_ok=True)
+    
     with SCPClient(ssh_session.get_transport()) as scp:
-        scp.get(remote_backup_filepath, local_dir)
+        scp.get(remote_backup_filepath, local_path=local_dir)
     logging.info(f"Restored file from backup: {filename}")
+    
+    # Post-recovery integrity check
+    current_hash = hash_file(filepath)
+    if current_hash != expected_hash:
+        logging.error(f"Post-recovery integrity check failed for {filepath}. The file may have been tampered with.")
+    else:
+        logging.info(f"Post-recovery integrity check passed for {filepath}.")
+
 
 def read_cfg_file(cfg_file):
     """ Read the .cfg file and handle folders or whole paths """
