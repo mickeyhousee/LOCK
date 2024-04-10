@@ -3,6 +3,10 @@ Projeto LOCK criado no âmbito do curso avançado de programação
 
 ![alt text](assets/L.png)
 
+## Ofuscate python file:
+https://pypi.org/project/PyObfuscator/
+
+
 ## Compile rust
 
 To Compile a rust program we need to install this:
