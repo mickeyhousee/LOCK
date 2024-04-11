@@ -1,36 +1,38 @@
-# MODULO SERVICEBACKUP
+# Guia de Utilização do Monitor de Ficheiros
 
-A função principal deste script é a monitorização e deteção de alterações de ficheiros com base no ficheiro .cfg.
-Existem 2 versões do modulo, uma com o código compilado (**usar no exercicio**) e outra com o código limpo.
+Este documento serve como um guia para a instalação, configuração e utilização do Monitor de Ficheiros, uma ferramenta desenvolvida pela Equipa de Desenvolvimento COCIBER PT. Esta ferramenta foi criada para monitorizar, fazer backup e transferir via SCP ficheiros específicos, garantindo a sua integridade e disponibilidade.
 
-Dentro da pasta que contem a versão do exercicio, exitem 4 ficheiros:
+# Descrição
 
-- installservice.py
-- services.cfg
-- sylogd.py
-- sylogd.service
+O Monitor de Ficheiros é uma aplicação robusta que observa mudanças em ficheiros especificados, realiza backups e, se necessário, restaura ficheiros a partir desses backups. Adicionalmente, os backups são enviados para um servidor via SCP para armazenamento remoto. Esta ferramenta é essencial para a manutenção da integridade dos dados críticos.
 
+# Instalação
+
+A ferramenta é distribuída como um executável, simplificando o processo de instalação. Siga os passos abaixo para instalar:
+
+    Transfira o executável do Monitor de Ficheiros para o seu sistema.
+    Garanta que o executável tem permissões de execução. No Linux, isto pode ser feito com o comando chmod +x nome_do_executável.
+    (Opcional) Mova o executável para um diretório incluído no seu PATH para facilitar o seu acesso.
+
+# Configuração
+
+Antes de utilizar a ferramenta, é necessário configurar os ficheiros a serem monitorizados e os detalhes do servidor SCP. Isto é feito através do ficheiro services.cfg e da configuração das variáveis de ambiente, respectivamente
 ---
 # ⚠️⚠️ IMPORTANTE ⚠️⚠️
 
-**_Enviar para a equipa de desenvolvimento todos os serviços a serem monitorizados pelo o script. Com este formato:_**
-
-![alt text](../../../../../assets/servicemonitor.png)
+**_Enviar para a equipa de desenvolvimento todos os ficheiros a serem monitorizados pelo script. **
 
 -----
+# Configuração SCP
 
-### installservice.py
+    Configure as seguintes variáveis de ambiente com os detalhes do seu servidor SCP:
+        SCP_SERVER: O endereço IP ou nome do host do servidor SCP.
+        SCP_USER: O nome de usuário para autenticação no servidor SCP.
+        SCP_PASSWORD: A senha para autenticação no servidor SCP. (Recomenda-se a utilização de autenticação por chave SSH para maior segurança.)
 
-Este script vai instalar o serviço atraves do ficheiro (**sylogd.service**) depois irá iniciar e dar enable ao serviço que por sua vez irá inciar o script (**sylogd.py**).
+# Utilização
 
-### services.cfg
+Para iniciar a monitorização, execute o aplicativo no terminal ou linha de comando. A ferramenta iniciará imediatamente a monitorização dos ficheiros especificados no services.cfg, realizando backups e transferências SCP conforme necessário.
+Paragem Segura
 
-Este ficheiro irá guardar **por linha** o nome dos serviços que o script (**sylogd.py**) irá monitorizar
-
-### sylogd.py
-
-Este é o script principal que vai ofuscado mas a função principal é monitorizar os serviços que estão no ficheiro (**services.cfg**), se os serviços forem desligados por alguma razão, ele irá tentar reativalos de 5 em 5 segundos (dependendo da capacidade de processamento da maquina).
-
-### sylogd.service
-
-Este ficheiro é o responsavel por dar inicio ao (**sylod.py**) quando o serviço arrancar. Basicamente este ficheiro é o ficheiro de configuração do serviço.
+Para interromper a ferramenta de forma segura, utilize os sinais SIGTERM ou SIGINT (Ctrl+C no terminal). Isto garantirá que todos os processos sejam encerrados corretamente e que o diretório de backup local seja eliminado para não deixar dados residuais.
