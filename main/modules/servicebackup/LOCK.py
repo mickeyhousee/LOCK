@@ -18,6 +18,8 @@ from logging.handlers import RotatingFileHandler
 import socket
 import os
 import stat
+import pwd
+import grp
 
 # Initialize logging
 def get_local_ip():
@@ -47,7 +49,7 @@ logging.basicConfig(
 )
 
 # SCP server details
-SCP_SERVER = '192.168.151.105'
+SCP_SERVER = '172.20.10.4'
 SCP_USER = 'joaog'
 SCP_PASSWORD = 'joaog'  # It's recommended to use SSH key authentication instead
 SCP_REMOTE_PATH = '/tmp/backups'
@@ -120,32 +122,29 @@ def scp_transfer(ssh_session, local_path, remote_path):
         scp.put(local_path, remote_path=remote_path, recursive=True)
         logging.info(f"Successfully transferred {local_path} to {remote_path}.")
 
-
-
 def backup_and_hash_files():
-    """ Backup and hash files listed in the .cfg file """
     files_to_monitor = read_cfg_file(MONITOR_CFG)
-
     manifest = {}
     for filepath in files_to_monitor:
         file_hash = hash_file(filepath)
+        stat_info = os.stat(filepath)
+        file_permissions = stat_info.st_mode & 0o777
+        uid = stat_info.st_uid
+        gid = stat_info.st_gid
         if file_hash:
-            manifest[filepath] = file_hash
-            # Backup the file
-            shutil.copy2(filepath, BACKUP_DIR)
-            logging.info(f"Backed up and hashed file: {filepath}")
+            manifest[filepath] = (file_hash, file_permissions, uid, gid)
+            backup_path = shutil.copy2(filepath, BACKUP_DIR)
+            logging.info(f"Backed up and hashed file: {filepath}, with permissions {oct(file_permissions)}, UID: {uid}, GID: {gid}. Backup path: {backup_path}")
 
-    # Write hashes to manifest file
     with open(os.path.join(BACKUP_DIR, MANIFEST_FILE), 'w') as f:
-        for path, file_hash in manifest.items():
-            f.write(f"{path},{file_hash}\n")
+        for path, (file_hash, permissions, uid, gid) in manifest.items():
+            f.write(f"{path},{file_hash},{permissions},{uid},{gid}\n")
 
-    # SCP transfer the backup directory
     ssh_session = create_scp_session()
     scp_transfer(ssh_session, BACKUP_DIR, os.path.join(SCP_REMOTE_PATH, local_ip))
     ssh_session.close()
-
     logging.info("Backup files and manifest transferred to SCP server.")
+
 
 def send_logs_to_scp(ssh_session):
     """ Send the logs to SCP server """
@@ -173,60 +172,63 @@ def fetch_backup_manifest(ssh_session, local_manifest_path):
 
 
 def monitor_files():
-    """Monitor the files for any changes based on the backup manifest from the SCP server."""
     ssh_session = create_scp_session()
     local_manifest_path = os.path.join(BACKUP_DIR, MANIFEST_FILE)
     fetch_backup_manifest(ssh_session, local_manifest_path)
     
-    # Load the backup hashes from the manifest file
     backup_hashes = {}
+    backup_permissions = {}
+    backup_owners = {}  # Dictionary to hold UID and GID
     with open(local_manifest_path, 'r') as manifest:
         for line in manifest:
-            filepath, file_hash = line.strip().split(',', 1)
+            parts = line.strip().split(',')
+            filepath, file_hash = parts[0], parts[1]
+            permissions, uid, gid = map(int, parts[2:5])  # Correctly extract and convert permissions, UID, and GID
             backup_hashes[filepath] = file_hash
+            backup_permissions[filepath] = permissions
+            backup_owners[filepath] = (uid, gid)  # Store UID and GID as a tuple
 
     while running:
         for filepath, expected_hash in backup_hashes.items():
-            # Check if the file exists
+            permissions = backup_permissions[filepath]
+            uid, gid = backup_owners[filepath]  # Extract UID and GID
             if os.path.exists(filepath):
-                # If it exists, hash the current file and compare
                 current_hash = hash_file(filepath)
                 if current_hash != expected_hash:
                     logging.warning(f"File changed or corrupted: {filepath}")
-                    restore_file_from_backup(ssh_session, filepath, expected_hash)
+                    restore_file_from_backup(ssh_session, filepath, expected_hash, permissions, uid, gid)
             else:
-                # If the file does not exist, restore it from backup
                 logging.warning(f"File deleted or moved: {filepath}")
-                restore_file_from_backup(ssh_session, filepath, expected_hash)
+                restore_file_from_backup(ssh_session, filepath, expected_hash, permissions, uid, gid)
                 
-            # Consider adding a short sleep here if you're monitoring a large number of files
-            # to reduce CPU usage. For example, time.sleep(0.1)
         send_logs_to_scp(ssh_session)
-        
-        # Wait some time before the next check to reduce load on the server
-        time.sleep(10)  # Adjust the sleep time as needed
+        time.sleep(10)
 
     ssh_session.close()
 
 
-def restore_file_from_backup(ssh_session, filepath, expected_hash):
-    """Restore the file from the backup on the SCP server and check its integrity."""
+def restore_file_from_backup(ssh_session, filepath, expected_hash, permissions, uid, gid):
     remote_backup_dir = os.path.join(SCP_REMOTE_PATH, local_ip)
     filename = os.path.basename(filepath)
     remote_backup_filepath = os.path.join(remote_backup_dir, 'backup', filename)
     local_dir = os.path.dirname(filepath)
-    
-    # Ensure local directory structure exists
+
     os.makedirs(local_dir, exist_ok=True)
     
     with SCPClient(ssh_session.get_transport()) as scp:
-        scp.get(remote_backup_filepath, local_path=local_dir)
-    logging.info(f"Restored file from backup: {filename}")
-    
-    # Post-recovery integrity check
+        scp.get(remote_backup_filepath, local_path=filepath)
+    logging.info(f"Restored file from backup: {filename}. Restored to: {filepath}")
+
+    try:
+        os.chmod(filepath, permissions)
+        os.chown(filepath, uid, gid)
+        logging.info(f"Successfully applied permissions {oct(permissions)} and ownership (UID: {uid}, GID: {gid}) to {filepath}.")
+    except Exception as e:
+        logging.error(f"Failed to apply permissions {oct(permissions)} and ownership (UID: {uid}, GID: {gid}) to {filepath}: {e}")
+
     current_hash = hash_file(filepath)
     if current_hash != expected_hash:
-        logging.error(f"Post-recovery integrity check failed for {filepath}. The file may have been tampered with.")
+        logging.error(f"Post-recovery integrity check failed for {filepath}.")
     else:
         logging.info(f"Post-recovery integrity check passed for {filepath}.")
 
