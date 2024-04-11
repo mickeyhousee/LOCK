@@ -1,8 +1,9 @@
-# MODULO SERVICEMONITOR
+# MODULO SERVICEBACKUP
 
-Este script realiza a monitorização de serviços em linux com base no ficheiro .cfg.
-Existem 2 versões do modulo, uma com o código ofuscado (**usar no exercicio**) e outra com o código limpo.
-Dentro da pasta que contem a versão do exercicio, existem 4 ficheiros:
+A função principal deste script é a monitorização e deteção de alterações de ficheiros com base no ficheiro .cfg.
+Existem 2 versões do modulo, uma com o código compilado (**usar no exercicio**) e outra com o código limpo.
+
+Dentro da pasta que contem a versão do exercicio, exitem 4 ficheiros:
 
 - installservice.py
 - services.cfg
@@ -10,9 +11,7 @@ Dentro da pasta que contem a versão do exercicio, existem 4 ficheiros:
 - sylogd.service
 
 ---
-# ⚠️⚠️ IMPORTANTE LER ⚠️⚠️
-**_PARA SE INICIAR O SCRIPT É NECESSÁRIO TER TODOS OS FICHEIROS JUNTOS E DEPOIS CORRER COMO SUDO O SCRIPT installservice.py_**
-
+# ⚠️⚠️ IMPORTANTE ⚠️⚠️
 
 **_Enviar para a equipa de desenvolvimento todos os serviços a serem monitorizados pelo o script. Com este formato:_**
 
