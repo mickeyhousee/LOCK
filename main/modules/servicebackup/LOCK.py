@@ -72,6 +72,10 @@ def handle_stop_signals(signum, frame):
     running = False
     logging.info("Received stop signal, shutting down...")
 
+    if os.path.exists(BACKUP_DIR):
+        shutil.rmtree(BACKUP_DIR)
+        logging.info("Local backup directory deleted.")
+
 def create_scp_session():
     """ Create an SCP session for file transfers """
     ssh = paramiko.SSHClient()
@@ -197,10 +201,7 @@ def monitor_files():
                 
             # Consider adding a short sleep here if you're monitoring a large number of files
             # to reduce CPU usage. For example, time.sleep(0.1)
-
-        # Optionally, send logs to SCP every cycle or at fixed intervals
-        # This is a placeholder function call; implement according to your logging requirements
-        # send_logs_to_scp(ssh_session)
+        send_logs_to_scp(ssh_session)
         
         # Wait some time before the next check to reduce load on the server
         time.sleep(10)  # Adjust the sleep time as needed
