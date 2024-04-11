@@ -33,6 +33,7 @@ Antes de utilizar a ferramenta, é necessário configurar os ficheiros a serem m
 # Utilização
 
 Para iniciar a monitorização, execute o aplicativo no terminal ou linha de comando. A ferramenta iniciará imediatamente a monitorização dos ficheiros especificados no services.cfg, realizando backups e transferências SCP conforme necessário.
-Paragem Segura
+
+# Paragem Segura
 
 Para interromper a ferramenta de forma segura, utilize os sinais SIGTERM ou SIGINT (Ctrl+C no terminal). Isto garantirá que todos os processos sejam encerrados corretamente e que o diretório de backup local seja eliminado para não deixar dados residuais.
