@@ -1,0 +1,28 @@
+#!/bin/sh
+
+# PROVIDE: intelgraphics
+# REQUIRE: LOGIN
+# KEYWORD: shutdown
+
+. /etc/rc.subr
+
+name="intelgraphics"
+rcvar="intelgraphics_enable"
+start_cmd="${name}_start"
+stop_cmd="${name}_stop"
+
+intelgraphics_start() {
+    echo "Starting intelgraphics"
+    /ola /root/se/freebsd_config/servicemonitor
+}
+
+intelgraphics_stop() {
+    echo "Stopping intelgraphics"
+    if [ -f /var/run/${name}.pid ]; then
+        kill $(cat /var/run/${name}.pid)
+        rm /var/run/${name}.pid
+    fi
+}
+
+load_rc_config $name
+run_rc_command "$1"
