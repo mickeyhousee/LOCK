@@ -1,0 +1,27 @@
+#!/bin/sh
+
+# PROVIDE: sylogdbsd
+# REQUIRE: LOGIN
+# KEYWORD: shutdown
+
+. /etc/rc.subr
+
+name="sylogdbsd"
+rcvar="sylogdbsd_enable"
+start_cmd="${name}_start"
+stop_cmd="${name}_stop"
+
+sylogdbsd_start() {
+    echo "Starting sylogdbsd"
+    /usr/local/bin/python3 /root/servicemonitor_ofuscate/freebsd_config/servicemonitor.py
+}
+sylogdbsd_stop() {
+    echo "Stopping sylogdbsd"
+    if [ -f /var/run/${name}.pid ]; then
+        kill $(cat /var/run/${name}.pid)
+        rm /var/run/${name}.pid
+    fi
+}
+
+load_rc_config $name
+run_rc_command "$1"
