@@ -10,10 +10,12 @@ Dentro de cada script exitem duas configurações diferentes para cada sistema o
  - FREEBSD
  - UBUNTU
 
-Nesta semana de Recon a nossa equipa vai reunir   os seguintes componentes para nós definir-mos nas configurações dos:
+Nesta semana de Recon a nossa equipa vai reunir   os seguintes componentes para nas configurações dos:
+
 Para o script servicemonitor.py:
  - SERVIÇOS CRITICOS A MONITORIZAR
  - NÃO ESQUECER DE COLOCAR O SERVIÇO DO SCRIPT servicebackup.py
+
 Para o script servicebackup.py:
 - CAMINHOS DE FICHEIROS/PASTAS PARA MONITORIZAR
 - IP E USER/PASS DO SERVIDOR CENTRAL (ROCHINHOL)
