@@ -1,0 +1,9 @@
+[Unit]
+Description=SERVICE_LOCK
+
+[Service]
+Type=simple
+ExecStart=/home/joaog/LOCK/main/modules/servicemonitor/servicemonitor.py
+
+[Install]
+WantedBy=multi-user.target
