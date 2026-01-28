@@ -1,99 +1,82 @@
 #!/usr/bin/env python3
-"""__summary__
+"""
 Script made for LS24
-This script is a menu to configure the modules.
-
+Menu to configure modules via systemd
 
 Author: Development Team CCD PT
 """
+
 import subprocess
 import os
+import sys
 
-# Function to install service using systemctl
+
+# ------------------------- SERVICE FUNCTIONS -------------------------
+
 def install_service(file_path, service_file_path, service_name):
-    print("Installing Service")
-    with open(service_file_path, 'r') as file:
+    print(f"Installing service: {service_name}")
+
+    if not os.path.isfile(file_path):
+        print(f"ERROR: Script not found -> {file_path}")
+        return
+
+    if not os.path.isfile(service_file_path):
+        print(f"ERROR: Service file not found -> {service_file_path}")
+        return
+
+    # Update ExecStart
+    with open(service_file_path, "r") as file:
         lines = file.readlines()
 
     for i, line in enumerate(lines):
         if line.startswith("ExecStart="):
             lines[i] = f"ExecStart={file_path}\n"
 
-    with open(service_file_path, 'w') as file:
+    with open(service_file_path, "w") as file:
         file.writelines(lines)
+
     try:
-        subprocess.run(['chmod', '+x', file_path], check=True)
+        subprocess.run(["chmod", "+x", file_path], check=True)
+        subprocess.run(["cp", service_file_path, "/etc/systemd/system/"], check=True)
+        subprocess.run(["systemctl", "daemon-reload"], check=True)
+        subprocess.run(["systemctl", "enable", service_name], check=True)
+        subprocess.run(["systemctl", "start", service_name], check=True)
 
-        # Command to copy service file to appropriate directory
-        subprocess.run(['cp', service_file_path, f'/etc/systemd/system/'], check=True)
-        
-        # Command to reload systemctl services
-        subprocess.run(['sudo', 'systemctl', 'daemon-reload'], check=True)
-        
-        # Command to enable the service
-        subprocess.run(['sudo', 'systemctl', 'enable', service_name], check=True)
-        
-        # Command to start the service
-        subprocess.run(['sudo', 'systemctl', 'start', service_name], check=True)
-        
-        print(f'Service {service_name} installed and started successfully!')
+        print(f"Service '{service_name}' installed and started successfully!")
+
     except subprocess.CalledProcessError as e:
-        print(f'An error occurred while installing service {service_name}: {e}')
-    print("Service installed successfully!")
+        print(f"ERROR installing service '{service_name}': {e}")
 
-# Function to stop service using systemctl
-def stop_service(service_name):
-    subprocess.run(['sudo', 'systemctl', 'stop', service_name], check=True)
-    print("Stopping service...")
-    # Commands to stop the service here
-    print(f"Service {service_name} stopped successfully!")
 
 def start_service(service_name):
-    subprocess.run(['sudo', 'systemctl', 'start', service_name], check=True)
-    print(f"Service {service_name} started successfully!")
+    try:
+        subprocess.run(["systemctl", "start", service_name], check=True)
+        print(f"Service '{service_name}' started successfully!")
+    except subprocess.CalledProcessError as e:
+        print(f"ERROR starting service '{service_name}': {e}")
 
 
+def stop_service(service_name):
+    try:
+        subprocess.run(["systemctl", "stop", service_name], check=True)
+        print(f"Service '{service_name}' stopped successfully!")
+    except subprocess.CalledProcessError as e:
+        print(f"ERROR stopping service '{service_name}': {e}")
 
 
+# ------------------------- MENUS -------------------------
 
-
-
-###################################### DISPLAY MENU ##############################################
-
-
-# Function to display "Backup" script menu
 def backup_menu():
-    while True:
-        print("\nBackup script Menu:")
-        print("1. Install service (systemctl)")
-        print("2. Start \"Backup\" service")
-        print("3. Stop \"Backup\" service")
-        print("4. Back")
-
-        option = input("Option: ")
-
-        if option == "1":
-            install_service()
-        elif option == "2":
-            start_service()
-        elif option == "3":
-            stop_service()
-        elif option == "4":
-            break
-        else:
-            print("Invalid option!")
-
-# Function to display "ServiceMonitor" script menu
-def service_monitor_menu():
     dir_path = os.path.dirname(os.path.realpath(__file__))
-    file_path = f"{dir_path}/modules/servicemonitor/servicemonitor.py"
-    service_file_path = f"{dir_path}/modules/servicemonitor/servicemonitor.service"
-    service_name = "servicemonitor"
+    file_path = f"{dir_path}/modules/backup/backup.py"
+    service_file_path = f"{dir_path}/modules/backup/backup.service"
+    service_name = "backup"
+
     while True:
-        print("\nServiceMonitor script Menu:")
-        print("1. Install service (systemctl)")
-        print("2. Start \"Backup\" ServiceMonitor")
-        print("3. Stop \"Backup\" ServiceMonitor")
+        print("\nBackup Script Menu:")
+        print("1. Install service")
+        print("2. Start Backup service")
+        print("3. Stop Backup service")
         print("4. Back")
 
         option = input("Option: ")
@@ -109,21 +92,59 @@ def service_monitor_menu():
         else:
             print("Invalid option!")
 
-# Main menu loop
-while True:
-    print("\nSelect an option:")
-    print("1. \"Backup\" Script")
-    print("2. \"ServiceMonitor\" Script")
-    print("3. Exit")
 
-    option = input("Option: ")
+def service_monitor_menu():
+    dir_path = os.path.dirname(os.path.realpath(__file__))
+    file_path = f"{dir_path}/modules/servicemonitor/servicemonitor.py"
+    service_file_path = f"{dir_path}/modules/servicemonitor/servicemonitor.service"
+    service_name = "servicemonitor"
 
-    if option == "1":
-        backup_menu()
-    elif option == "2":
-        service_monitor_menu()
-    elif option == "3":
-        print("Exiting...")
-        break
-    else:
-        print("Invalid option!")
+    while True:
+        print("\nServiceMonitor Script Menu:")
+        print("1. Install service")
+        print("2. Start ServiceMonitor service")
+        print("3. Stop ServiceMonitor service")
+        print("4. Back")
+
+        option = input("Option: ")
+
+        if option == "1":
+            install_service(file_path, service_file_path, service_name)
+        elif option == "2":
+            start_service(service_name)
+        elif option == "3":
+            stop_service(service_name)
+        elif option == "4":
+            break
+        else:
+            print("Invalid option!")
+
+
+# ------------------------- MAIN -------------------------
+
+def main():
+    if os.geteuid() != 0:
+        print("ERROR: Run this script as root.")
+        sys.exit(1)
+
+    while True:
+        print("\nSelect an option:")
+        print("1. Backup Script")
+        print("2. ServiceMonitor Script")
+        print("3. Exit")
+
+        option = input("Option: ")
+
+        if option == "1":
+            backup_menu()
+        elif option == "2":
+            service_monitor_menu()
+        elif option == "3":
+            print("Exiting...")
+            break
+        else:
+            print("Invalid option!")
+
+
+if __name__ == "__main__":
+    main()
