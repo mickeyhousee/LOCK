@@ -11,8 +11,6 @@ import os
 import shutil
 import logging
 import time
-import paramiko
-from scp import SCPClient
 import signal
 from logging.handlers import RotatingFileHandler
 import socket
@@ -48,12 +46,6 @@ logging.basicConfig(
     ]
 )
 
-# SCP server details
-SCP_SERVER = '172.20.10.4'
-SCP_USER = 'joaog'
-SCP_PASSWORD = 'joaog'  # It's recommended to use SSH key authentication instead
-SCP_REMOTE_PATH = '/tmp/backups'
-
 # Relative Path
 dir_path = os.path.dirname(os.path.realpath(__file__))
 
@@ -78,13 +70,6 @@ def handle_stop_signals(signum, frame):
         shutil.rmtree(BACKUP_DIR)
         logging.info("Local backup directory deleted.")
 
-def create_scp_session():
-    """ Create an SCP session for file transfers """
-    ssh = paramiko.SSHClient()
-    ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-    ssh.connect(SCP_SERVER, username=SCP_USER, password=SCP_PASSWORD)
-    return ssh
-
 def hash_file(filepath):
     """ Generate SHA-256 hash for the specified file """
     hasher = hashlib.sha256()
@@ -96,32 +81,6 @@ def hash_file(filepath):
         logging.error(f"Failed to hash file {filepath}: {e}")
         return None
     
-def scp_transfer(ssh_session, local_path, remote_path):
-    """
-    Transfer a file or directory to the SCP server, ensuring the remote path exists.
-    
-    :param ssh_session: An active SSH session.
-    :param local_path: The local path of the file or directory to transfer.
-    :param remote_path: The remote destination path on the SCP server.
-    """
-    # Command to create the remote directory structure if it doesn't exist
-    mkdir_command = f'mkdir -p {remote_path}'
-    
-    # Execute the mkdir command on the remote server
-    stdin, stdout, stderr = ssh_session.exec_command(mkdir_command)
-    exit_status = stdout.channel.recv_exit_status()  # Wait for the command to complete
-    
-    if exit_status == 0:
-        logging.info(f"Ensured remote directory exists: {remote_path}.")
-    else:
-        logging.error(f"Failed to ensure remote directory exists: {remote_path}. stderr: {stderr.read().decode()}")
-        return  # Exit if the directory could not be created
-
-    # Proceed to transfer the file or directory
-    with SCPClient(ssh_session.get_transport()) as scp:
-        scp.put(local_path, remote_path=remote_path, recursive=True)
-        logging.info(f"Successfully transferred {local_path} to {remote_path}.")
-
 def backup_and_hash_files():
     files_to_monitor = read_cfg_file(MONITOR_CFG)
     manifest = {}
@@ -140,41 +99,12 @@ def backup_and_hash_files():
         for path, (file_hash, permissions, uid, gid) in manifest.items():
             f.write(f"{path},{file_hash},{permissions},{uid},{gid}\n")
 
-    ssh_session = create_scp_session()
-    scp_transfer(ssh_session, BACKUP_DIR, os.path.join(SCP_REMOTE_PATH, local_ip))
-    ssh_session.close()
-    logging.info("Backup files and manifest transferred to SCP server.")
-
-
-def send_logs_to_scp(ssh_session):
-    """ Send the logs to SCP server """
-    remote_log_file = os.path.join(SCP_REMOTE_PATH, local_ip, log_file)
-    with SCPClient(ssh_session.get_transport()) as scp:
-        scp.put(log_file, remote_path=remote_log_file)
-
-def fetch_backup_manifest(ssh_session, local_manifest_path):
-    """Download the backup manifest file from the SCP server."""
-    remote_manifest_path = os.path.join(SCP_REMOTE_PATH, local_ip, MANIFEST_FILE)
-    
-    # Attempt to check if the remote manifest exists before fetching
-    stdin, stdout, stderr = ssh_session.exec_command(f"test -f {remote_manifest_path} && echo 'exists' || echo 'not exists'")
-    if stdout.read().decode().strip() != "exists":
-        logging.error(f"Remote manifest file does not exist: {remote_manifest_path}")
-        # Handle the error (e.g., retry, create a new file, or abort)
-        return
-    
-    with SCPClient(ssh_session.get_transport()) as scp:
-        try:
-            scp.get(remote_manifest_path, local_manifest_path)
-        except SCPException as e:
-            logging.error(f"Failed to fetch manifest: {e}")
-            # Additional error handling here
-
 
 def monitor_files():
-    ssh_session = create_scp_session()
     local_manifest_path = os.path.join(BACKUP_DIR, MANIFEST_FILE)
-    fetch_backup_manifest(ssh_session, local_manifest_path)
+    if not os.path.exists(local_manifest_path):
+        logging.error(f"Local manifest file does not exist: {local_manifest_path}")
+        return
     
     backup_hashes = {}
     backup_permissions = {}
@@ -196,28 +126,25 @@ def monitor_files():
                 current_hash = hash_file(filepath)
                 if current_hash != expected_hash:
                     logging.warning(f"File changed or corrupted: {filepath}")
-                    restore_file_from_backup(ssh_session, filepath, expected_hash, permissions, uid, gid)
+                    restore_file_from_backup(filepath, expected_hash, permissions, uid, gid)
             else:
                 logging.warning(f"File deleted or moved: {filepath}")
-                restore_file_from_backup(ssh_session, filepath, expected_hash, permissions, uid, gid)
-                
-        send_logs_to_scp(ssh_session)
+                restore_file_from_backup(filepath, expected_hash, permissions, uid, gid)
         time.sleep(10)
 
-    ssh_session.close()
-
-
-def restore_file_from_backup(ssh_session, filepath, expected_hash, permissions, uid, gid):
-    remote_backup_dir = os.path.join(SCP_REMOTE_PATH, local_ip)
+def restore_file_from_backup(filepath, expected_hash, permissions, uid, gid):
     filename = os.path.basename(filepath)
-    remote_backup_filepath = os.path.join(remote_backup_dir, 'backup', filename)
+    backup_filepath = os.path.join(BACKUP_DIR, filename)
     local_dir = os.path.dirname(filepath)
 
     os.makedirs(local_dir, exist_ok=True)
-    
-    with SCPClient(ssh_session.get_transport()) as scp:
-        scp.get(remote_backup_filepath, local_path=filepath)
-    logging.info(f"Restored file from backup: {filename}. Restored to: {filepath}")
+
+    try:
+        shutil.copy2(backup_filepath, filepath)
+        logging.info(f"Restored file from local backup: {filename}. Restored to: {filepath}")
+    except Exception as e:
+        logging.error(f"Failed to restore file from local backup {backup_filepath} to {filepath}: {e}")
+        return
 
     try:
         os.chmod(filepath, permissions)
