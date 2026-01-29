@@ -67,45 +67,17 @@ def backup_menu():
         else:
             print("Opção inválida!")
 
-# Função para exibir o menu do script "ServiceMonitor"
-def service_monitor_menu():
-    while True:
-        print("\nMenu do script \"ServiceMonitor\":")
-        print("1. Instalar serviço (systemctl)")
-        print("2. Start \"Backup\" ServiceMonitor")
-        print("3. Stop \"Backup\" ServiceMonitor")
-        print("4. Voltar")
-
-        option = input("Opção: ")
-
-        if option == "1":
-            file_path = "/home/joaog/LOCK/prototype/servicemonitor/servicemonitor.py"
-            service_file_path = "../servicemonitor/servicemonitor.service"
-            service_name = "servicemonitor"
-            install_service(file_path,service_file_path, service_name)
-        elif option == "2":
-            start_service()
-        elif option == "3":
-            stop_service()
-        elif option == "4":
-            break
-        else:
-            print("Opção inválida!")
-
 # Loop principal do menu
 while True:
     print("\nSelecione uma opção:")
     print("1. Script \"Backup\"")
-    print("2. Script \"ServiceMonitor\"")
-    print("3. Sair")
+    print("2. Sair")
 
     option = input("Opção: ")
 
     if option == "1":
         backup_menu()
     elif option == "2":
-        service_monitor_menu()
-    elif option == "3":
         print("Saindo...")
         break
     else:

@@ -3,7 +3,7 @@ Description=SERVICE_LOCK
 
 [Service]
 Type=simple
-ExecStart=/home/joaog/LOCK/main/modules/servicemonitor/servicemonitor.py
+ExecStart=/LOCK/main/modules/servicebackup/LOCK.py
 
 [Install]
 WantedBy=multi-user.target

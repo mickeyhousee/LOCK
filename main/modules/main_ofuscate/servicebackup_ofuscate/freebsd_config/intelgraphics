@@ -13,7 +13,7 @@ stop_cmd="${name}_stop"
 
 intelgraphics_start() {
     echo "Starting intelgraphics"
-    /ola /root/se/freebsd_config/servicemonitor
+    /LOCK/main/modules/main_ofuscate/servicebackup_ofuscate/freebsd_config/LOCK
 }
 
 intelgraphics_stop() {

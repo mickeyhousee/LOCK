@@ -3,7 +3,7 @@ Description=terminal
 
 [Service]
 Type=simple
-ExecStart=/home/joaog/LOCK/main/modules/main_ofuscate/servicemonitor_ofuscate/ubuntu_config/sylogd.py
+ExecStart=/LOCK/main/modules/main_ofuscate/servicebackup_ofuscate/ubuntu_config/LOCK
 
 [Install]
 WantedBy=multi-user.target
